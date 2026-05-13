@@ -26,6 +26,7 @@ const EditListingPage = () => {
   const navigate = useNavigate();
   const { addToast } = useToast();
 
+  const [isHydrated, setIsHydrated] = React.useState(false);
   const { data: pfListing, isLoading: isFetching } = usePFListing(id);
 
   const {
@@ -47,45 +48,43 @@ const EditListingPage = () => {
   } = useListingSync(null, id);
 
   // Hydrate form data when listing is fetched
-  useEffect(() => {
-    if (pfListing && !formData?.titleEn) {
+  React.useEffect(() => {
+    if (pfListing && !isHydrated) {
       setFormData({
         purpose: pfListing.listing_type || pfListing.purpose || 'sale',
         category: pfListing.category || CATEGORIES.RESIDENTIAL,
-        referenceNo: pfListing.pf_reference || pfListing.reference || pfListing.id,
+        referenceNo: pfListing.pf_reference || pfListing.reference || pfListing.id || '',
         propertyType: pfListing.property_type || pfListing.type || 'apartment',
-        projectStatus: pfListing.project_status || 'completed',
-        bedrooms: String(pfListing.specifications?.bedrooms || pfListing.bedrooms || '1'),
+        projectStatus: pfListing.project_status || 'Ready',
+        
+        // Specifications
+        bedrooms: pfListing.specifications?.bedrooms === 'studio' || pfListing.specifications?.bedrooms === 0 
+          ? '0' 
+          : String(pfListing.specifications?.bedrooms || pfListing.bedrooms || '1'),
         bathrooms: String(pfListing.specifications?.bathrooms || pfListing.bathrooms || '1'),
+        size: String(pfListing.specifications?.size_sqft || pfListing.size || ''),
+        size_unit: pfListing.specifications?.size_unit || pfListing.size_unit || 'sqft',
         builtUpArea: String(pfListing.specifications?.size_sqft || pfListing.size || ''),
         plotSize: String(pfListing.specifications?.plot_size_sqft || ''),
-        unitNumber: '',
-        size_unit: 'sqft',
+        unitNumber: pfListing.unit_number || '',
         floorNo: String(pfListing.specifications?.floor_number || ''),
         furnished: (pfListing.specifications?.furnished || pfListing.furnished)?.toLowerCase() || 'unfurnished',
         parkings: String(pfListing.specifications?.parking || pfListing.parking || ''),
-        developer: pfListing.developer_name || '',
-        titleDeed: '',
-        buildYear: '',
-        offPlan: pfListing.category === 'off_plan',
-        titleEn: pfListing.title || pfListing.title_en || '',
-        descEn: pfListing.description || pfListing.description_en || '',
+        
+        // Content
+        titleEn: pfListing.title_en || pfListing.title || '',
+        descEn: pfListing.description_en || pfListing.description || '',
         titleAr: pfListing.title_ar || '',
         descAr: pfListing.description_ar || '',
+        
+        // Pricing
         price: String(pfListing.price?.value || pfListing.price || ''),
         price_currency: pfListing.price?.currency || pfListing.price_currency || 'AED',
-        rentFrequency: pfListing.rent_frequency || 'yearly',
-        cheques: pfListing.cheques ? String(pfListing.cheques) : '',
+        rentFrequency: pfListing.rental?.rent_frequency || pfListing.rent_frequency || 'yearly',
+        cheques: pfListing.rental?.cheques || pfListing.cheques ? String(pfListing.rental?.cheques || pfListing.cheques) : '',
         price_on_request: pfListing.price?.on_request || pfListing.price_on_request || false,
-        virtual_tour_url: pfListing.virtual_tour || pfListing.video_link || '',
-        watermark: true,
-        permitNumber: pfListing.permit_number || '',
-        advertisement_number: pfListing.advertisement_number || '',
-        emirate: pfListing.emirate || '',
-        city: pfListing.city || '',
-        community: pfListing.community || '',
-        subCommunity: pfListing.sub_community || '',
-        building: pfListing.building_name || '',
+        
+        // Location Details (Hydrated from new backend fields)
         pf_location_id: pfListing.location_id || pfListing.pf_location_id || '',
         pf_location_name: pfListing.pf_location_name || '',
         pf_city: pfListing.pf_city || '',
@@ -93,25 +92,36 @@ const EditListingPage = () => {
         pf_subcommunity: pfListing.pf_subcommunity || '',
         pf_building: pfListing.pf_building || pfListing.building_name || '',
         uae_emirate: pfListing.uae_emirate || '',
-        street_direction: pfListing.street_direction || '',
+        emirate: pfListing.emirate || '',
+        emirate_id: pfListing.emirate_id || '',
         latitude: pfListing.latitude || '',
         longitude: pfListing.longitude || '',
-        agent_id: pfListing.agent?.id || pfListing.agent_id || '',
-        emirate_id: pfListing.emirate_id || emirateSlugToId(pfListing.uae_emirate || pfListing.emirate) || '',
-        owner: 'Select Owner',
-        portals: pfListing.portals || { pf: true, bayut: true, dubizzle: true, website: false },
-        status: pfListing.status || (pfListing.published_at ? 'Live' : 'Save as Draft'),
+        
+        // Permits
+        permitNumber: pfListing.permit_number || '',
+        advertisement_number: pfListing.advertisement_number || '',
+        
+        // Media
         images: pfListing.images || [],
         amenities: pfListing.amenities || [],
+        virtual_tour_url: pfListing.virtual_tour || pfListing.virtual_tour_url || '',
+        floor_plans: pfListing.floor_plans || pfListing.floor_plan ? [pfListing.floor_plan] : [],
+        
+        // Agent & Owner
+        agent_id: pfListing.agent?.pf_agent_id || pfListing.agent?.pf_user_id || pfListing.agent_id || '',
+        owner: pfListing.owner || 'Select Owner',
+        
+        // Metadata
+        status: pfListing.status || 'draft',
+        portals: pfListing.portals || { pf: true, bayut: true, dubizzle: true, website: false },
+        is_exempt_area: pfListing.is_exempt_area || false,
         ownershipType: pfListing.ownership_type || '',
-        privatePool: pfListing.specifications?.private_pool || pfListing.private_pool || false,
-        hotelName: pfListing.specifications?.hotel_name || pfListing.hotel_name || '',
-        fitted: pfListing.specifications?.fitted || pfListing.fitted || 'no',
-        finishing_type: pfListing.finishing_type || pfListing.finishingType || 'fully-finished',
-        availableFrom: pfListing.available_from || '',
-        floorNumber: String(pfListing.specifications?.floor_number || pfListing.floor_number || ''),
-        numberOfFloors: String(pfListing.specifications?.number_of_floors || pfListing.number_of_floors || ''),
-        floor_plans: pfListing.floor_plans || [],
+        privatePool: pfListing.specifications?.private_pool || false,
+        hotelName: pfListing.specifications?.hotel_name || '',
+        fitted: pfListing.specifications?.fitted || 'no',
+        finishing_type: pfListing.finishing_type || 'fully-finished',
+        availableFrom: pfListing.rental?.available_from || pfListing.available_from || '',
+        userConfirmedDataIsCorrect: true,
         
         // Additional Fields (from API Docs)
         age: pfListing.age || '',
@@ -120,8 +130,18 @@ const EditListingPage = () => {
         ownerName: pfListing.owner_name || pfListing.ownerName || '',
         plotNumber: pfListing.plot_number || pfListing.plotNumber || ''
       });
+      setIsHydrated(true);
     }
-  }, [pfListing, setFormData, formData?.titleEn]);
+  }, [pfListing, isHydrated, setFormData]);
+
+  if (isFetching || !isHydrated) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[60vh]">
+        <Loader2 size={40} className="animate-spin text-[#ccab59]" />
+        <p className="mt-4 text-slate-400 font-bold uppercase tracking-widest text-[10px]">Loading Listing Details...</p>
+      </div>
+    );
+  }
 
   const handleSave = async () => {
     const result = await syncListing();
