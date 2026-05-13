@@ -43,6 +43,7 @@ const agentService = {
         
         return {
           id: agent.id,
+          publicProfile_id: agent.publicProfile?.id ?? null, // PF portal public agent ID (e.g. 310399)
           name: agentService.capitalize(rawName),
           email: agent.email,
           is_active: agent.status === 'active' || agent.is_active,
@@ -70,6 +71,7 @@ const agentService = {
 
       return {
         id: agent.id,
+        publicProfile_id: agent.publicProfile?.id ?? null,
         name: agentService.capitalize(rawName),
         email: agent.email,
         is_active: agent.status === 'active' || agent.is_active,
