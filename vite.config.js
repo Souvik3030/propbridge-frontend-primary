@@ -8,18 +8,18 @@ export default defineConfig({
     tailwindcss()
   ],
   server: {
-    proxy: {
-      '/api': {
-        target: 'http://127.0.0.1:8000',
+    proxy:{
+      '/api':{
+        target: 'http://65.1.249.176/api/',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '/api'),
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
       '/sanctum': {
-        target: 'http://127.0.0.1:8000',
+        target: 'http://65.1.249.176/',
         changeOrigin: true,
       },
       '/storage': {
-        target: 'http://127.0.0.1:8000',
+        target: 'http://65.1.249.176/',
         changeOrigin: true,
       }
     }
