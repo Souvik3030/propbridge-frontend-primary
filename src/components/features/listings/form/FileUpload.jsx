@@ -25,7 +25,7 @@ const FileUpload = ({ label, subtitle, files = [], setFiles }) => {
           
           try {
             const res = await apiClient.post('/media/upload', form, {
-              headers: { 'Content-Type': undefined },
+              headers: { 'Content-Type': null },
             });
             const extractedUrl = res?.url || res?.data?.url || res?.path || res?.data?.path;
             if (!extractedUrl) {
