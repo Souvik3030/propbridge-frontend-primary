@@ -60,6 +60,7 @@ const EditListingPage = () => {
         builtUpArea: String(pfListing.specifications?.size_sqft || pfListing.size || ''),
         plotSize: String(pfListing.specifications?.plot_size_sqft || ''),
         unitNumber: '',
+        size_unit: 'sqft',
         floorNo: String(pfListing.specifications?.floor_number || ''),
         furnished: (pfListing.specifications?.furnished || pfListing.furnished)?.toLowerCase() || 'unfurnished',
         parkings: String(pfListing.specifications?.parking || pfListing.parking || ''),
@@ -72,6 +73,7 @@ const EditListingPage = () => {
         titleAr: pfListing.title_ar || '',
         descAr: pfListing.description_ar || '',
         price: String(pfListing.price?.value || pfListing.price || ''),
+        price_currency: pfListing.price?.currency || pfListing.price_currency || 'AED',
         rentFrequency: pfListing.rent_frequency || 'yearly',
         cheques: pfListing.cheques ? String(pfListing.cheques) : '',
         price_on_request: pfListing.price?.on_request || pfListing.price_on_request || false,
@@ -109,7 +111,14 @@ const EditListingPage = () => {
         availableFrom: pfListing.available_from || '',
         floorNumber: String(pfListing.specifications?.floor_number || pfListing.floor_number || ''),
         numberOfFloors: String(pfListing.specifications?.number_of_floors || pfListing.number_of_floors || ''),
-        floor_plans: pfListing.floor_plans || []
+        floor_plans: pfListing.floor_plans || [],
+        
+        // Additional Fields (from API Docs)
+        age: pfListing.age || '',
+        landNumber: pfListing.land_number || pfListing.landNumber || '',
+        mojDeedLocationDescription: pfListing.moj_deed_location_description || pfListing.mojDeedLocationDescription || '',
+        ownerName: pfListing.owner_name || pfListing.ownerName || '',
+        plotNumber: pfListing.plot_number || pfListing.plotNumber || ''
       });
     }
   }, [pfListing, setFormData, formData?.titleEn]);
@@ -298,6 +307,55 @@ const EditListingPage = () => {
                 options={PROJECT_STATUS_OPTIONS}
                 error={errors.projectStatus}
               />
+            </div>
+          </FormSection>
+
+          {/* Deed & Ownership Section */}
+          <FormSection title="Deed & Ownership" subtitle="Property registration and ownership details">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <FormInput
+                name="ownerName"
+                label="Owner Name"
+                placeholder="Enter owner name"
+                value={formData.ownerName}
+                onChange={handleInputChange}
+                error={errors.ownerName}
+              />
+              <FormInput
+                name="landNumber"
+                label="Land Number"
+                placeholder="Enter land number"
+                value={formData.landNumber}
+                onChange={handleInputChange}
+                error={errors.landNumber}
+              />
+              <FormInput
+                name="plotNumber"
+                label="Plot Number"
+                placeholder="Enter plot number"
+                value={formData.plotNumber}
+                onChange={handleInputChange}
+                error={errors.plotNumber}
+              />
+              <FormInput
+                name="age"
+                label="Property Age (Years)"
+                type="number"
+                placeholder="Years since handover"
+                value={formData.age}
+                onChange={handleInputChange}
+                error={errors.age}
+              />
+              <div className="md:col-span-2">
+                <FormInput
+                  name="mojDeedLocationDescription"
+                  label="MOJ Deed Location Description"
+                  placeholder="Enter deed location description"
+                  value={formData.mojDeedLocationDescription}
+                  onChange={handleInputChange}
+                  error={errors.mojDeedLocationDescription}
+                />
+              </div>
             </div>
           </FormSection>
 

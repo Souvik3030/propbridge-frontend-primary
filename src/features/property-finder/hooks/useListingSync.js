@@ -99,13 +99,14 @@ const normalizeBathrooms = (value) => {
   return Number(value) === 0 ? 'none' : String(value);
 };
 
-const buildPFPrice = ({ purpose, price, rentFrequency, cheques, hidePrice, priceOnRequest }) => {
+const buildPFPrice = ({ purpose, price, currency, rentFrequency, cheques, hidePrice, priceOnRequest }) => {
   const listingType = purpose?.toLowerCase?.() === 'rent' ? 'rent' : 'sale';
   const period = listingType === 'rent' ? (rentFrequency || 'yearly') : 'sale';
   const amount = Number(price);
 
   return {
     amounts: Number.isFinite(amount) && amount > 0 ? { [period]: amount } : undefined,
+    currency: currency || 'AED',
     numberOfCheques: cheques ? Number(cheques) : undefined,
     onRequest: Boolean(priceOnRequest || hidePrice),
     type: period,
@@ -232,6 +233,14 @@ export const useListingSync = (initialData = null, id = null) => {
     is_exempt_area: false,
     finishing_type: 'fully-finished',
     userConfirmedDataIsCorrect: false,
+    size_unit: 'sqft',
+
+    // ── Additional Fields (from API Docs) ────────────────
+    age: '',
+    landNumber: '',
+    mojDeedLocationDescription: '',
+    ownerName: '',
+    plotNumber: '',
   });
 
   const [emirateRules, setEmirateRules] = useState(null);
@@ -569,7 +578,15 @@ export const useListingSync = (initialData = null, id = null) => {
     if (mappedProjectStatus === 'ready') mappedProjectStatus = 'completed';
 
     // 3. Payload Construction
-    const sizeValue = formData.size || formData.builtUpArea;
+    let sizeValue = Number(formData.size || formData.builtUpArea || 0);
+    let plotSizeValue = Number(formData.plotSize || 0);
+
+    // Convert SQM to SQFT if necessary (API expects SQFT)
+    if (formData.size_unit === 'sqm') {
+      sizeValue = Math.round(sizeValue * 10.7639);
+      plotSizeValue = Math.round(plotSizeValue * 10.7639);
+    }
+
     const propertyType = normalizePFPropertyType(formData.propertyType);
     const agentId = Number(formData.agent_id);
     const finishingType = normalizeFinishingType(formData.finishing_type);
@@ -717,10 +734,11 @@ export const useListingSync = (initialData = null, id = null) => {
       },
       numberOfFloors: formData.numberOfFloors ? Number(formData.numberOfFloors) : undefined,
       parkingSlots: formData.parkings ? Number(formData.parkings) : undefined,
-      plotSize: formData.plotSize ? Number(formData.plotSize) : undefined,
+      plotSize: plotSizeValue || undefined,
       price: buildPFPrice({
         purpose: formData.purpose,
         price: formData.price,
+        currency: formData.price_currency,
         rentFrequency: formData.rentFrequency,
         cheques: formData.cheques,
         hidePrice: formData.hidePrice,
@@ -737,6 +755,13 @@ export const useListingSync = (initialData = null, id = null) => {
       type: propertyType,
       uaeEmirate,
       unitNumber: formData.unitNumber || undefined,
+
+      // Additional Fields (from API Docs)
+      age: formData.age ? Number(formData.age) : undefined,
+      landNumber: formData.landNumber || undefined,
+      mojDeedLocationDescription: formData.mojDeedLocationDescription || undefined,
+      ownerName: formData.ownerName || undefined,
+      plotNumber: formData.plotNumber || undefined,
     };
 
 
@@ -758,6 +783,74 @@ export const useListingSync = (initialData = null, id = null) => {
       return result;
     } catch (error) {
       console.error('[useListingSync] sync failed:', error);
+      
+      // Parse server-side validation errors
+      if (error.response?.status === 422 || error.response?.data?.errors) {
+        const apiErrors = error.response.data.errors;
+        const mappedErrors = {};
+        
+        // Comprehensive Mapping Layer (API Key -> Form Key)
+        const keyMap = {
+          'reference': 'referenceNo',
+          'title': 'titleEn',
+          'title.en': 'titleEn',
+          'description': 'descEn',
+          'description.en': 'descEn',
+          'type': 'propertyType',
+          'listing_type': 'purpose',
+          'uaeEmirate': 'uae_emirate',
+          'price': 'price',
+          'price.amounts.sale': 'price',
+          'price.amounts.yearly': 'price',
+          'permit_number': 'permitNumber',
+          'advertisement_number': 'advertisement_number',
+          'location': 'pf_location_id',
+          'images': 'images',
+          'age': 'age',
+          'landNumber': 'landNumber',
+          'ownerName': 'ownerName',
+          'plotNumber': 'plotNumber'
+        };
+        
+        Object.keys(apiErrors).forEach(key => {
+          const formKey = keyMap[key] || key;
+          // Flatten array of errors into a single string
+          mappedErrors[formKey] = Array.isArray(apiErrors[key]) ? apiErrors[key][0] : apiErrors[key];
+        });
+        
+        setErrors(mappedErrors);
+        addToast("Validation failed. Please check the highlighted fields.", "error");
+        
+        // Auto-scroll to first server-side error with prominent highlighting
+        const firstErrorField = Object.keys(mappedErrors)[0];
+        const element = document.getElementsByName(firstErrorField)[0] || 
+                      document.querySelector(`[id="${firstErrorField}"]`) ||
+                      document.querySelector(`[name*="${firstErrorField}"]`);
+                      
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          
+          // Add a temporary shake animation to the field
+          element.style.transition = 'transform 0.1s ease-in-out';
+          const shake = [
+            'translateX(0)', 'translateX(-10px)', 'translateX(10px)', 
+            'translateX(-10px)', 'translateX(10px)', 'translateX(0)'
+          ];
+          let i = 0;
+          const interval = setInterval(() => {
+            element.style.transform = shake[i];
+            i++;
+            if (i >= shake.length) {
+              clearInterval(interval);
+              element.style.transform = 'none';
+            }
+          }, 50);
+          
+          setTimeout(() => element.focus(), 500);
+        }
+      } else {
+        addToast(error.response?.data?.message || "Failed to save listing. Please try again.", "error");
+      }
       return false;
     }
   };
