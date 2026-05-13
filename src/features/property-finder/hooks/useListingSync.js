@@ -114,7 +114,7 @@ const buildPFPrice = ({ purpose, price, rentFrequency, cheques, hidePrice, price
 
 export const useListingSync = (initialData = null, id = null) => {
   const { addToast } = useToast();
-  
+
   const { mutateAsync: createListing, isPending: isCreating } = useCreatePFListing();
   const { mutateAsync: updateListing, isPending: isUpdating } = useUpdatePFListing();
 
@@ -124,12 +124,11 @@ export const useListingSync = (initialData = null, id = null) => {
   const [errors, setErrors] = useState({});
   const [complianceResult, setComplianceResult] = useState(null);
   const [isCheckingCompliance, setIsCheckingCompliance] = useState(false);
-  const [complianceStatus, setComplianceStatus] = useState('idle'); 
+  const [complianceStatus, setComplianceStatus] = useState('idle');
 
 
 
   const { data: agents = [], isLoading: isLoadingAgents } = useAgentsQuery();
-
 
   const [formData, setFormData] = useState(initialData || {
     // ── Core Required ──────────────────────────────────
@@ -245,7 +244,7 @@ export const useListingSync = (initialData = null, id = null) => {
     const purpose = formData.purpose?.toLowerCase();
     const propertyType = normalizeFormPropertyType(formData.propertyType);
     const category = formData.category?.toLowerCase();
-    
+
     const newRequired = {};
     const newVisible = {};
 
@@ -273,7 +272,7 @@ export const useListingSync = (initialData = null, id = null) => {
     if (category === CATEGORIES.RESIDENTIAL || category === 'residential') {
       newRequired.bedrooms = true;
       newVisible.bedrooms = true;
-      
+
       // Bathrooms Required if listing type is not Land or Farm
       if (!['land', 'farm'].includes(propertyType)) {
         newRequired.bathrooms = true;
@@ -322,8 +321,8 @@ export const useListingSync = (initialData = null, id = null) => {
 
     // Floor rules for apartments/offices
     if (['apartment', 'penthouse', 'hotel_apartment', 'office'].includes(propertyType)) {
-       newVisible.floorNumber = true;
-       newVisible.numberOfFloors = true;
+      newVisible.floorNumber = true;
+      newVisible.numberOfFloors = true;
     }
 
     setRequired(newRequired);
@@ -395,7 +394,7 @@ export const useListingSync = (initialData = null, id = null) => {
 
   const handleInputChange = useCallback((e) => {
     const { name, value, type, checked } = e.target;
-    
+
     if (name === 'category') {
       setFormData(prev => ({
         ...prev,
@@ -477,12 +476,12 @@ export const useListingSync = (initialData = null, id = null) => {
       umm_al_quwain: 7,
       umm_al_q: 7,
     };
-    
+
     // Normalize string for lookup
     const emirateKey = location.uae_emirate?.toLowerCase().trim().replace(/[-\s]+/g, '_');
-    const detectedId = emirateMap[emirateKey] || 
-                      (location.uae_emirate?.toLowerCase().includes('dubai') ? 1 : 
-                       location.uae_emirate?.toLowerCase().includes('abu dhabi') ? 2 : null);
+    const detectedId = emirateMap[emirateKey] ||
+      (location.uae_emirate?.toLowerCase().includes('dubai') ? 1 :
+        location.uae_emirate?.toLowerCase().includes('abu dhabi') ? 2 : null);
 
     setFormData(prev => ({
       ...prev,
@@ -554,7 +553,7 @@ export const useListingSync = (initialData = null, id = null) => {
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       addToast("Please check the highlighted fields for errors.", "error");
-      
+
       // Auto-scroll to first error
       const firstErrorField = Object.keys(newErrors)[0];
       const element = document.getElementsByName(firstErrorField)[0] || document.querySelector(`[id="${firstErrorField}"]`);
@@ -597,7 +596,7 @@ export const useListingSync = (initialData = null, id = null) => {
       listing_type: (formData.purpose || 'sale').toLowerCase(),
       category: formData.category?.toLowerCase(),
       property_type: propertyType,
-      
+
       // Flattened fields based on backend validation errors
       price: Number(formData.price),
       price_currency: formData.price_currency || 'AED',
@@ -608,10 +607,10 @@ export const useListingSync = (initialData = null, id = null) => {
       description: formData.descEn,
       description_en: formData.descEn,
       description_ar: formData.descAr || undefined,
-      
+
       bedrooms: (formData.category === 'residential' || formData.category === CATEGORIES.RESIDENTIAL) ? Number(formData.bedrooms) : undefined,
       bathrooms: (formData.category === 'residential' || formData.category === CATEGORIES.RESIDENTIAL) ? Number(formData.bathrooms) : undefined,
-      
+
       images: Array.isArray(formData.images) ? formData.images : [],
       media: {
         images: (Array.isArray(formData.images) ? formData.images : []).map(url => ({
@@ -619,7 +618,7 @@ export const useListingSync = (initialData = null, id = null) => {
           caption: ''
         }))
       },
-      
+
       // Permit / Compliance (Flattened)
       permit_number: formData.permitNumber || undefined,
       permit_license_number: formData.permit_license_number || undefined,
@@ -765,10 +764,10 @@ export const useListingSync = (initialData = null, id = null) => {
 
   const handleRecheckCompliance = async () => {
     if (!id) {
-       addToast("Please save the listing as a draft before running a compliance check.", "info");
-       return;
+      addToast("Please save the listing as a draft before running a compliance check.", "info");
+      return;
     }
-    
+
     setIsCheckingCompliance(true);
     try {
       const result = await listingService.checkCompliance(id);
@@ -779,8 +778,8 @@ export const useListingSync = (initialData = null, id = null) => {
         setFormData(prev => ({
           ...prev,
           price: result.verifiedData.price || prev.price,
-          purpose: result.verifiedData.listingType === 'rent' ? 'Rent' : 
-                   result.verifiedData.listingType === 'sale' ? 'Sale' : prev.purpose,
+          purpose: result.verifiedData.listingType === 'rent' ? 'Rent' :
+            result.verifiedData.listingType === 'sale' ? 'Sale' : prev.purpose,
           category: result.verifiedData.saleType || prev.category
         }));
         addToast("Compliance check completed. Form data updated with verified permit details.", "success");
@@ -807,7 +806,7 @@ export const useListingSync = (initialData = null, id = null) => {
       if (emirateRules?.emirate_id === 2) permitType = 'adrec';
 
       const pfData = await propertyFinderApi.getComplianceDetails(formData.permitNumber, permitType);
-      
+
       // AE / DLD / ADREC Path
       const propertyData = pfData?.data?.[0]?.property;
       if (propertyData) {
@@ -817,16 +816,16 @@ export const useListingSync = (initialData = null, id = null) => {
           size: String(propertyData.size || prev.size),
           builtUpArea: String(propertyData.size || prev.builtUpArea),
           bedrooms: String(propertyData.roomsCount || prev.bedrooms),
-          purpose: propertyData.permitType === 'Sell' ? 'sale' : 
-                   propertyData.permitType === 'Rent' ? 'rent' : prev.purpose,
+          purpose: propertyData.permitType === 'Sell' ? 'sale' :
+            propertyData.permitType === 'Rent' ? 'rent' : prev.purpose,
           propertyType: normalizeFormPropertyType(propertyData.listing_type) || prev.propertyType,
           unitNumber: propertyData.unitNumber || prev.unitNumber,
         }));
         addToast("Permit verified. Form auto-filled with official data.", "success");
         setComplianceStatus('success');
       } else {
-         setComplianceStatus('error');
-         addToast("Could not find property details for this permit.", "error");
+        setComplianceStatus('error');
+        addToast("Could not find property details for this permit.", "error");
       }
     } catch (error) {
       console.error('Compliance fetch failed:', error);
