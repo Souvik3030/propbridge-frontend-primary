@@ -1,78 +1,79 @@
 import React from 'react';
-import { Grid, Building2, CheckCircle2, BarChart3 } from 'lucide-react';
+import { LayoutGrid, Building2, CheckCircle2, TrendingUp } from 'lucide-react';
 
 const QuickInsights = () => {
   const insights = [
     { 
       label: 'Total DLD Areas', 
       value: '176', 
-      icon: <Grid className="w-5 h-5 text-blue-500" />, 
-      bgColor: 'bg-blue-50 dark:bg-blue-900/20',
-      textColor: 'text-blue-600 dark:text-blue-400' 
+      icon: <LayoutGrid className="w-[18px] h-[18px] stroke-[#3b82f6]" />, 
+      color: 'text-[#3b82f6]',
+      bgColor: 'bg-[#3b82f612]',
+      circleColor: 'bg-[#3b82f606]'
     },
     { 
       label: 'Active Off-Plan', 
       value: '1109', 
-      icon: <Building2 className="w-5 h-5 text-[#ccab59]" />, 
-      bgColor: 'bg-orange-50/50 dark:bg-orange-900/10',
-      textColor: 'text-[#ccab59]' 
+      icon: <Building2 className="w-[18px] h-[18px] stroke-[#c9a84c]" />, 
+      color: 'text-[#c9a84c]',
+      bgColor: 'bg-[#c9a84c12]',
+      circleColor: 'bg-[#c9a84c06]'
     },
     { 
       label: 'Ready Properties', 
       value: '12,666', 
-      icon: <CheckCircle2 className="w-5 h-5 text-emerald-500" />, 
-      bgColor: 'bg-emerald-50 dark:bg-emerald-900/20',
-      textColor: 'text-emerald-600 dark:text-emerald-400' 
+      icon: <CheckCircle2 className="w-[18px] h-[18px] stroke-[#10b981]" />, 
+      color: 'text-[#10b981]',
+      bgColor: 'bg-[#10b98112]',
+      circleColor: 'bg-[#10b98106]'
     },
     { 
       label: 'Average ROI', 
       value: '6.5%', 
-      icon: <BarChart3 className="w-5 h-5 text-purple-500" />, 
-      bgColor: 'bg-purple-50 dark:bg-purple-900/20',
-      textColor: 'text-purple-600 dark:text-purple-400' 
+      icon: <TrendingUp className="w-[18px] h-[18px] stroke-[#8b5cf6]" />, 
+      color: 'text-[#8b5cf6]',
+      bgColor: 'bg-[#8b5cf612]',
+      circleColor: 'bg-[#8b5cf606]'
     },
   ];
 
   return (
-    <section className="mb-12">
-      {/* Header with teal/gold accent */}
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-[3px] h-6 bg-[#1a73e8] dark:bg-[#ccab59]"></div>
-        <h2 className="text-2xl font-bold text-[#0f172a] dark:text-white font-serif">
-          Quick Insights
-        </h2>
+    <div className="mb-8">
+      {/* Header */}
+      <div className="flex items-center gap-[10px] mb-[18px]">
+        <div className="w-1 h-6 rounded-[2px] bg-[linear-gradient(rgb(16,185,129),rgb(59,130,246))]"></div>
+        <h2 className="text-[22px] font-bold font-serif text-[#111424] dark:text-[#f0f0f0] m-0 transition-colors">Quick Insights</h2>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      {/* Grid */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-[14px]">
         {insights.map((insight, idx) => (
           <div 
-            key={idx} 
-            className="group relative overflow-hidden bg-white dark:bg-[#111827] p-10 rounded-2xl border border-[#ece7d9] dark:border-slate-800 flex flex-col items-center justify-center text-center transition-all shadow-sm"
+            key={idx}
+            className="group bg-white dark:bg-[#1a1f33] border border-slate-200/60 dark:border-white/5 rounded-[14px] p-[20px_16px] text-center relative overflow-hidden transition-all hover:shadow-lg dark:hover:shadow-none hover:border-slate-300 dark:hover:border-white/10"
           >
-            {/* Background Decorative Circle (Bottom Right) */}
-            <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-slate-50 dark:bg-slate-800/40 rounded-full pointer-events-none" />
+            {/* Background Decoration */}
+            <div className={`absolute -bottom-[10px] -right-[10px] w-[50px] h-[50px] rounded-full ${insight.circleColor} pointer-events-none group-hover:scale-125 transition-transform opacity-60 dark:opacity-100`}></div>
+            
+            {/* Icon Wrapper */}
+            <div className={`w-10 h-10 rounded-[12px] ${insight.bgColor} flex items-center justify-center mx-auto mb-3 relative z-10 transition-transform group-hover:scale-110`}>
+              {insight.icon}
+            </div>
 
-            <div className="relative z-10 flex flex-col items-center">
-              {/* Soft Squared Icon Background */}
-              <div className={`p-3 rounded-xl ${insight.bgColor} mb-6 transition-transform group-hover:scale-110 duration-300`}>
-                {insight.icon}
-              </div>
+            {/* Value */}
+            <div className={`text-[26px] font-extrabold ${insight.color} font-mono leading-[1.1] mb-1 relative z-10 tracking-tight`}>
+              {insight.value}
+            </div>
 
-              {/* Value with specific tracking */}
-              <h3 className={`text-3xl font-bold mb-2 tracking-tight ${insight.textColor}`}>
-                {insight.value}
-              </h3>
-
-              {/* Label */}
-              <p className="text-sm font-medium text-slate-500 dark:text-slate-400">
-                {insight.label}
-              </p>
+            {/* Label */}
+            <div className="text-[12px] text-slate-500 dark:text-[#8892a4] font-medium relative z-10 transition-colors">
+              {insight.label}
             </div>
           </div>
         ))}
       </div>
-    </section>
+    </div>
   );
 };
 
-export default QuickInsights;
+export default QuickInsights;

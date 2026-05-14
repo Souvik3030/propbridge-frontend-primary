@@ -161,11 +161,11 @@ const EditListingPage = () => {
   }
 
   return (
-    <div className="min-h-screen pb-20">
+    <div className="min-h-screen pb-10">
       <div className="max-w-[1200px] mx-auto px-4">
 
         {/* Header */}
-        <div className="flex items-center justify-between mb-8 sticky top-0 bg-[#f3efe6]/80 dark:bg-[#0a0d18]/80 backdrop-blur-md z-10 py-4">
+        <div className="flex items-center justify-between mb-2 sticky top-0 bg-[#f3efe6]/80 dark:bg-[#0a0d18]/80 backdrop-blur-md z-10 py-2">
           <div className="flex items-center gap-4">
             <button
               onClick={() => navigate(-1)}
@@ -177,7 +177,7 @@ const EditListingPage = () => {
             <h1 className="text-[24px] font-black text-slate-900 dark:text-white tracking-tight">Edit Listing</h1>
           </div>
 
-          <div className="flex items-center gap-3">
+          {/* <div className="flex items-center gap-3">
             <button
               onClick={() => navigate(-1)}
               className="px-6 py-2.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl font-bold text-[14px] border border-[#ece7d9] dark:border-slate-700 hover:bg-slate-100 transition-colors"
@@ -192,7 +192,7 @@ const EditListingPage = () => {
               {isPending ? <Loader2 size={18} className="animate-spin" /> : <Check size={18} />}
               {isPending ? 'Saving...' : 'Save Changes'}
             </button>
-          </div>
+          </div> */}
         </div>
 
         <div className="space-y-6">
@@ -331,7 +331,7 @@ const EditListingPage = () => {
           </FormSection>
 
           {/* Deed & Ownership Section */}
-          <FormSection title="Deed & Ownership" subtitle="Property registration and ownership details">
+          {/* <FormSection title="Deed & Ownership" subtitle="Property registration and ownership details">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <FormInput
                 name="ownerName"
@@ -377,7 +377,7 @@ const EditListingPage = () => {
                 />
               </div>
             </div>
-          </FormSection>
+          </FormSection> */}
 
           {/* Pricing Section */}
           <FormSection title="Pricing" subtitle="Set pricing and rental details">
@@ -509,6 +509,40 @@ const EditListingPage = () => {
             </div>
           </FormSection>
 
+          {/* Portal Selection Section */}
+          <FormSection title="Portal Selection" subtitle="Choose where to publish your listing">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 p-4 bg-slate-50 dark:bg-slate-900/40 rounded-2xl border border-[#ece7d9] dark:border-slate-800">
+              <FormCheckbox
+                id="portal-pf"
+                name="portals.pf"
+                label="Property Finder"
+                checked={formData.portals?.pf || false}
+                onChange={handleInputChange}
+              />
+              <FormCheckbox
+                id="portal-bayut"
+                name="portals.bayut"
+                label="Bayut"
+                checked={formData.portals?.bayut || false}
+                onChange={handleInputChange}
+              />
+              <FormCheckbox
+                id="portal-dubizzle"
+                name="portals.dubizzle"
+                label="Dubizzle"
+                checked={formData.portals?.dubizzle || false}
+                onChange={handleInputChange}
+              />
+              <FormCheckbox
+                id="portal-website"
+                name="portals.website"
+                label="Website"
+                checked={formData.portals?.website || false}
+                onChange={handleInputChange}
+              />
+            </div>
+          </FormSection>
+
           {/* Publishing Section */}
           <FormSection title="Publishing Status">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -524,10 +558,11 @@ const EditListingPage = () => {
               ))}
             </div>
           </FormSection>
+
         </div>
 
         {/* Bottom Actions */}
-        <div className="flex items-center justify-end gap-3 mt-8">
+        <div className="flex items-center justify-end gap-3 mt-4">
           <button
             onClick={() => navigate(-1)}
             className="px-8 py-3 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl font-bold border border-[#ece7d9] dark:border-slate-700"

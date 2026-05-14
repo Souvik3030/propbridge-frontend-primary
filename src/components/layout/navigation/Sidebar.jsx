@@ -95,10 +95,14 @@ const Sidebar = () => {
         {/* Brand */}
         <Link
           to="/"
-          className="flex items-center gap-2 cursor-pointer flex-shrink-0"
+          className="flex items-center gap-[10px] cursor-pointer flex-shrink-0"
         >
-          <div className="flex items-center justify-center w-7 h-7 rounded bg-[#ccab59] text-white font-serif font-bold text-base">V</div>
-          <span className="font-serif font-bold text-[#ccab59] tracking-widest text-base hidden sm:block">VORTEXWEB</span>
+          <div className="w-8 h-8 rounded-[8px] bg-[linear-gradient(135deg,rgb(201,168,76),rgb(168,138,62))] flex items-center justify-center text-[14px] font-extrabold text-[#0a0e1a] font-serif transition-transform hover:scale-105">
+            V
+          </div>
+          <span className="text-[18px] font-extrabold text-[#c9a84c] font-serif tracking-[3px] hidden sm:block">
+            VORTEXWEB
+          </span>
         </Link>
 
         {/* Desktop Nav */}

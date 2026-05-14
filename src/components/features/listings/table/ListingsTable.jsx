@@ -57,8 +57,32 @@ const PortalIndicator = ({ portals = [] }) => (
   </div>
 );
 
-const ListingsTable = ({ listings, onRowClick }) => {
-  const headerClass = "p-3.5 text-left text-[11px] font-bold tracking-[0.8px] uppercase text-slate-500 dark:text-slate-400 border-b border-black/5 dark:border-white/10";
+const ListingsTable = ({ listings, onRowClick, pagination, onPageChange }) => {
+  const [selectedIds, setSelectedIds] = React.useState([]);
+  const headerClass = "p-1 text-left text-[11px] font-bold tracking-[0.8px] uppercase text-slate-500 dark:text-slate-400 border-b border-black/5 dark:border-white/10";
+
+  const handleSelectAll = (e) => {
+    if (e.target.checked) {
+      const newIds = listings.map(item => item.id);
+      setSelectedIds(prev => [...new Set([...prev, ...newIds])]);
+    } else {
+      const currentIds = listings.map(item => item.id);
+      setSelectedIds(prev => prev.filter(id => !currentIds.includes(id)));
+    }
+  };
+
+  const handleSelectRow = (e, id) => {
+    e.stopPropagation();
+    setSelectedIds(prev => 
+      prev.includes(id) 
+        ? prev.filter(i => i !== id) 
+        : [...prev, id]
+    );
+  };
+
+  const currentSelectedCount = listings.filter(item => selectedIds.includes(item.id)).length;
+  const isAllSelected = listings.length > 0 && currentSelectedCount === listings.length;
+  const isSomeSelected = currentSelectedCount > 0 && currentSelectedCount < listings.length;
 
   return (
     <div className="bg-white dark:bg-[#101624] border border-black/10 dark:border-white/10 rounded-xl overflow-hidden font-['DM_Sans',_sans-serif] shadow-sm dark:shadow-none">
@@ -67,7 +91,15 @@ const ListingsTable = ({ listings, onRowClick }) => {
           <thead>
             <tr className="bg-[#f3f0e8] dark:bg-[#171d2b]">
               <th className="p-3.5 pl-4 w-9 border-b border-black/5 dark:border-white/10">
-                <input type="checkbox" className="w-3.5 h-3.5 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900" />
+                <input 
+                  type="checkbox" 
+                  checked={isAllSelected}
+                  ref={input => {
+                    if (input) input.indeterminate = isSomeSelected;
+                  }}
+                  onChange={handleSelectAll}
+                  className="w-3 h-3 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 accent-[#c9a84c]" 
+                />
               </th>
               <th className={headerClass}>ACTIONS</th>
               <th className={headerClass}>REFERENCE</th>
@@ -91,7 +123,12 @@ const ListingsTable = ({ listings, onRowClick }) => {
                 className="group relative cursor-pointer hover:bg-[#fffaf0] dark:hover:bg-white/[0.06] hover:shadow-[inset_3px_0_0_#c9a84c] transition-all duration-200 border-b border-black/5 dark:border-white/10 last:border-none"
               >
                 <td className="p-3.5 pl-4">
-                  <input type="checkbox" onClick={(e) => e.stopPropagation()} className="w-3.5 h-3.5 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900" />
+                  <input 
+                    type="checkbox" 
+                    checked={selectedIds.includes(item.id)}
+                    onChange={(e) => handleSelectRow(e, item.id)}
+                    className="w-3.5 h-3.5 rounded border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-900 accent-[#c9a84c]" 
+                  />
                 </td>
 
                 <td className="p-3.5">
@@ -176,6 +213,62 @@ const ListingsTable = ({ listings, onRowClick }) => {
           </tbody>
         </table>
       </div>
+
+      {/* Pagination Footer */}
+      {pagination && (
+        <div className="px-6 py-4 bg-[#f8f9fb] dark:bg-[#111827] border-t border-black/5 dark:border-white/10 flex items-center justify-between">
+          <div className="text-[13px] text-slate-500 dark:text-slate-400 font-medium">
+            Showing <span className="text-slate-900 dark:text-white font-bold">{pagination.from || 0}</span> to <span className="text-slate-900 dark:text-white font-bold">{pagination.to || 0}</span> of <span className="text-slate-900 dark:text-white font-bold">{pagination.total || 0}</span> listings
+          </div>
+          <div className="flex items-center gap-1.5">
+            <button
+              onClick={() => onPageChange(pagination.current_page - 1)}
+              disabled={pagination.current_page === 1}
+              className="px-3 py-1.5 text-[12px] font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 disabled:opacity-40 disabled:hover:bg-transparent rounded-lg transition-all"
+            >
+              Previous
+            </button>
+            
+            <div className="flex items-center gap-1 mx-2">
+              {[...Array(pagination.last_page)].map((_, i) => {
+                const p = i + 1;
+                // Simple logic to show only current, first, last, and neighbors
+                if (
+                  p === 1 || 
+                  p === pagination.last_page || 
+                  (p >= pagination.current_page - 1 && p <= pagination.current_page + 1)
+                ) {
+                  return (
+                    <button
+                      key={p}
+                      onClick={() => onPageChange(p)}
+                      className={`w-8 h-8 flex items-center justify-center rounded-lg text-[12px] font-bold transition-all ${
+                        pagination.current_page === p
+                          ? 'bg-[#c9a84c] text-white shadow-md'
+                          : 'text-slate-500 hover:bg-slate-200 dark:hover:bg-slate-800'
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  );
+                }
+                if (p === pagination.current_page - 2 || p === pagination.current_page + 2) {
+                  return <span key={p} className="text-slate-400 text-[12px]">...</span>;
+                }
+                return null;
+              })}
+            </div>
+
+            <button
+              onClick={() => onPageChange(pagination.current_page + 1)}
+              disabled={pagination.current_page === pagination.last_page}
+              className="px-3 py-1.5 text-[12px] font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 disabled:opacity-40 disabled:hover:bg-transparent rounded-lg transition-all"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

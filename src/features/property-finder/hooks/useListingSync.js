@@ -152,7 +152,6 @@ export const useListingSync = (initialData = null, id = null) => {
     emirate: '',
     emirate_id: '',
     pf_location_id: '',
-    pf_location_name: '',
     pf_city: '',
     pf_community: '',
     pf_subcommunity: '',
@@ -457,7 +456,6 @@ export const useListingSync = (initialData = null, id = null) => {
       setFormData(prev => ({
         ...prev,
         pf_location_id: '',
-        pf_location_name: '',
         pf_city: '',
         pf_community: '',
         pf_subcommunity: '',
@@ -495,7 +493,6 @@ export const useListingSync = (initialData = null, id = null) => {
     setFormData(prev => ({
       ...prev,
       pf_location_id: location.id,
-      pf_location_name: location.location,
       pf_city: location.city === '-' ? '' : (location.city || ''),
       pf_community: location.community === '-' ? '' : (location.community || ''),
       pf_subcommunity: location.sub_community === '-' ? '' : (location.sub_community || ''),
@@ -681,6 +678,7 @@ export const useListingSync = (initialData = null, id = null) => {
           .filter(amenity => allowedAmenities.has(amenity))
         : [],
       project_status: mappedProjectStatus,
+      portals: formData.portals,
     };
 
     // Clean payload
@@ -762,6 +760,7 @@ export const useListingSync = (initialData = null, id = null) => {
       mojDeedLocationDescription: formData.mojDeedLocationDescription || undefined,
       ownerName: formData.ownerName || undefined,
       plotNumber: formData.plotNumber || undefined,
+      portals: formData.portals,
     };
 
 
@@ -809,7 +808,8 @@ export const useListingSync = (initialData = null, id = null) => {
           'age': 'age',
           'landNumber': 'landNumber',
           'ownerName': 'ownerName',
-          'plotNumber': 'plotNumber'
+          'plotNumber': 'plotNumber',
+          'portals': 'portals'
         };
         
         Object.keys(apiErrors).forEach(key => {

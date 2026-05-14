@@ -1,87 +1,101 @@
 import React from 'react';
-import { Building2, Globe, Layers, CreditCard } from 'lucide-react';
 
 const StatCard = ({ icon: Icon, value, label, subValue, subColor }) => (
-  <div className="bg-white dark:bg-[#1a1c2e]/40 backdrop-blur-xl border border-slate-200 dark:border-slate-700/30 rounded-[16px] p-4 flex flex-col gap-3 transition-all hover:translate-y-1 hover:shadow-xl group">
-    <div className="w-9 h-9 rounded-lg bg-[#fdf8e9] dark:bg-[#2a2d42] flex items-center justify-center text-[#ccab59] group-hover:scale-110 transition-transform">
-      <Icon size={18} strokeWidth={1.5} />
-    </div>
-    
-    <div className="flex flex-col gap-0">
-      <div className="text-[28px] font-serif font-bold text-slate-900 dark:text-white leading-none">
-        {value}
+  <div className="bg-white dark:bg-[#1a1c2e] border border-black/5 dark:border-white/5 rounded-xl p-[18px] transition-all hover:shadow-lg">
+    <div className="flex items-center gap-[10px] mb-[10px]">
+      <div className="w-[38px] h-[38px] rounded-[9px] flex items-center justify-center bg-[#c9a84c]/10 dark:bg-[#c9a84c]/20 text-[#c9a84c]">
+        <Icon size={18} />
       </div>
-      <div className="text-[11px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-1">
-        {label}
-      </div>
-      {subValue && (
-        <div className={`text-[9px] font-bold uppercase tracking-wider ${subColor || 'text-slate-500'}`}>
-          {subValue}
-        </div>
-      )}
     </div>
+    <div className="text-[26px] font-extrabold text-[#1a1a2e] dark:text-white font-serif">
+      {value}
+    </div>
+    <div className="text-[12px] text-gray-500 dark:text-gray-400 mt-[2px]">
+      {label}
+    </div>
+    {subValue && (
+      <div className={`text-[11px] mt-[4px] ${subColor || 'text-red-500'}`}>
+        {subValue}
+      </div>
+    )}
   </div>
 );
 
 const OwnerDashboard = () => {
   return (
-    <div className="flex flex-col gap-4 w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
-      {/* Header bar */}
-      <div className="bg-[#f9f5eb] dark:bg-[#1a1c2e]/40 backdrop-blur-xl border border-slate-200 dark:border-slate-700/30 rounded-[16px] px-5 py-4 flex items-center gap-4 shadow-sm dark:shadow-xl relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-[#ccab59]/5 dark:bg-[#ccab59]/10 -rotate-45 translate-x-16 -translate-y-16 rounded-full pointer-events-none" />
-        
-        <div className="w-10 h-10 rounded-lg bg-[#fdf8e9] dark:bg-[#2a2d42] flex items-center justify-center text-[#ccab59] shadow-sm dark:shadow-inner">
-           <Building2 size={20} strokeWidth={1.5} />
+    <div className="flex flex-col gap-[14px] mb-[18px]">
+      {/* Welcome Banner */}
+      <div className="bg-[#c9a84c]/5 dark:bg-[#c9a84c]/10 border border-[#c9a84c]/20 dark:border-[#c9a84c]/30 rounded-xl px-5 py-[14px] flex items-center gap-3">
+        <div className="w-11 h-11 rounded-full bg-[#c9a84c]/15 dark:bg-[#c9a84c]/20 flex items-center justify-center">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#c9a84c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-[22px] h-[22px]">
+            <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+            <path d="M9 22v-4h6v4"></path>
+            <path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"></path>
+          </svg>
         </div>
-        
-        <div className="flex flex-col gap-0">
-          <h1 className="text-[20px] font-serif font-bold text-slate-900 dark:text-white leading-tight">
+        <div>
+          <div className="text-[18px] font-extrabold text-[#1a1a2e] dark:text-white font-serif">
             Owner Dashboard
-          </h1>
-          <p className="text-[11px] text-slate-500 dark:text-slate-400 font-bold uppercase tracking-[0.1em]">
-            Welcome back, <span className="text-[#ccab59]">Mohammad Ali</span> • 14 properties managed
-          </p>
+          </div>
+          <div className="text-[13px] text-gray-500 dark:text-gray-400">
+            Welcome back, <span className="text-[#1a1a2e] dark:text-gray-200 font-semibold">Mohammad Ali</span> • 14 properties managed
+          </div>
         </div>
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[14px]">
         <StatCard 
-          icon={Building2}
+          icon={() => (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px]">
+              <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+              <path d="M9 22v-4h6v4"></path>
+              <path d="M8 6h.01M16 6h.01M12 6h.01M12 10h.01M12 14h.01M16 10h.01M16 14h.01M8 10h.01M8 14h.01"></path>
+            </svg>
+          )}
           value="14"
           label="My Listings"
           subValue="9 live"
-          subColor="text-red-500"
         />
         <StatCard 
-          icon={Globe}
+          icon={() => (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px]">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+            </svg>
+          )}
           value="9"
           label="Live on Portals"
           subValue="3 pending"
-          subColor="text-red-500"
         />
         <StatCard 
-          icon={Layers}
+          icon={() => (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px]">
+              <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+              <polyline points="2 17 12 22 22 17"></polyline>
+              <polyline points="2 12 12 17 22 12"></polyline>
+            </svg>
+          )}
           value="—"
           label="Off-Plan Projects"
           subValue="Bayut Live"
-          subColor="text-red-500"
         />
         <StatCard 
-          icon={CreditCard}
+          icon={() => (
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-[18px] h-[18px]">
+              <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
+              <line x1="1" y1="10" x2="23" y2="10"></line>
+            </svg>
+          )}
           value="3"
           label="Pending Approval"
-          subValue="Pending Approval"
-          subColor="text-slate-400 dark:text-slate-500"
+          subValue=""
         />
       </div>
-
-      <style dangerouslySetInnerHTML={{ __html: `
-        @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&display=swap');
-        .font-serif { font-family: 'DM Serif Display', serif; }
-      `}} />
     </div>
   );
 };
 
 export default OwnerDashboard;
+

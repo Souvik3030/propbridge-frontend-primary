@@ -1,43 +1,43 @@
 import React from 'react';
 
-const StatCard = ({ value, label, colorClass }) => (
-  <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center min-w-[110px] transition-all hover:bg-white/10">
-    <span className={`text-[28px] font-bold leading-none ${colorClass}`}>
+const StatBadge = ({ value, label, colorClass }) => (
+  <div className="bg-white/10 rounded-[10px] py-[10px] px-4 text-center min-w-[100px] transition-all hover:bg-white/15">
+    <div className={`text-[20px] font-[800] font-mono leading-tight ${colorClass}`}>
       {value}
-    </span>
-    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-2 text-center">
+    </div>
+    <div className="text-[10px] color-white/50 uppercase tracking-tight mt-0.5 font-bold">
       {label}
-    </span>
+    </div>
   </div>
 );
 
 const OperationsCommandCenter = () => {
   return (
-    <div className="bg-[#1a1c2e] dark:bg-[#0f111a] rounded-[24px] p-6 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-white/5">
-      <div className="flex flex-col gap-1 text-center md:text-left">
-        <h1 className="text-[24px] font-serif font-bold text-white leading-tight tracking-tight">
+    <div className="bg-gradient-to-br from-[#1e293b] to-[#334155] rounded-[16px] p-[28px_32px] mb-6 flex flex-wrap justify-between items-center gap-4 shadow-xl border border-white/5 transition-all">
+      <div className="flex flex-col">
+        <h1 className="text-[26px] font-[800] font-serif text-white mb-1.5 leading-tight">
           Operations Command Center
         </h1>
-        <p className="text-[12px] text-slate-400 font-medium">
+        <p className="text-[14px] text-white/60 font-medium tracking-tight">
           Real-time listing compliance, portal feeds, and team performance
         </p>
       </div>
 
-      <div className="flex items-center gap-4 w-full md:w-auto overflow-x-auto no-scrollbar justify-center">
-        <StatCard 
-          value="1,284" 
-          label="LISTINGS" 
-          colorClass="text-[#ccab59]" 
+      <div className="flex gap-3">
+        <StatBadge 
+          value="14" 
+          label="Listings" 
+          colorClass="text-[#c9a84c]" 
         />
-        <StatCard 
-          value="1,142" 
-          label="PASSING" 
-          colorClass="text-emerald-400" 
+        <StatBadge 
+          value="14" 
+          label="Passing" 
+          colorClass="text-[#10b981]" 
         />
-        <StatCard 
-          value="142" 
-          label="FAILING" 
-          colorClass="text-red-400" 
+        <StatBadge 
+          value="0" 
+          label="Failing" 
+          colorClass="text-[#ef4444]" 
         />
       </div>
     </div>

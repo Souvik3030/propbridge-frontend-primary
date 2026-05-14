@@ -1,92 +1,84 @@
 import React from 'react';
-import { ExternalLink, AlertCircle, CheckCircle2, MoreHorizontal } from 'lucide-react';
-
-const auditData = [
-  { id: 1, ref: 'DXB-L-1024', title: 'Premium 3BR Villa in Marina', score: 94, errors: 0, warnings: 1, status: 'pass' },
-  { id: 2, ref: 'DXB-L-9921', title: 'Studio Apartment - Downtown', score: 42, errors: 3, warnings: 2, status: 'fail' },
-  { id: 3, ref: 'DXB-L-4410', title: 'Luxury Penthouse Palm Jumeirah', score: 88, errors: 0, warnings: 2, status: 'pass' },
-  { id: 4, ref: 'DXB-L-7712', title: '2BR Apartment - Business Bay', score: 65, errors: 1, warnings: 4, status: 'warning' },
-];
+import { CheckCircle, AlertTriangle, XCircle, MoreVertical } from 'lucide-react';
 
 const ComplianceAuditTable = () => {
+  const listings = [
+    { ref: 'VW-17708912', title: 'Canal-Facing Spacious 2BR | Ready to Move', score: 98, errors: 0, warnings: 0, status: 'pass' },
+    { ref: 'VW-17716891', title: 'Modern 1BR | High ROI | Off-Plan Investment', score: 66, errors: 2, warnings: 1, status: 'warning' },
+    { ref: 'VW-17715541', title: 'Brand New 2BR | Fully Fitted | Sea View', score: 100, errors: 0, warnings: 0, status: 'pass' },
+    { ref: 'VW-17710298', title: 'Green Belt | Rented | 3BR + Maid Room', score: 93, errors: 0, warnings: 1, status: 'pass' },
+    { ref: 'VW-17718513', title: 'Lagoon View | Genuine Resale | 3M Below OP', score: 100, errors: 0, warnings: 0, status: 'pass' },
+    { ref: 'VW-17719234', title: 'Emaar Beachfront | 3BR | Full Sea View', score: 100, errors: 0, warnings: 0, status: 'pass' },
+  ];
+
+  const getScoreColor = (score) => {
+    if (score >= 90) return '#10b981';
+    if (score >= 70) return '#f59e0b';
+    return '#ef4444';
+  };
+
   return (
-    <div className="bg-white dark:bg-[#1a1c2e]/40 backdrop-blur-xl border border-slate-100 dark:border-slate-800 rounded-[20px] overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500">
-      <div className="px-5 py-3 border-b border-slate-100 dark:border-slate-800/50 flex items-center justify-between bg-slate-50/50 dark:bg-white/5">
-        <div className="flex flex-col">
-          <h3 className="text-[15px] font-bold text-slate-800 dark:text-white">Listing Compliance Audit</h3>
-          <p className="text-[10px] text-slate-400 font-medium">Real-time validation against portal rules</p>
-        </div>
-        <button className="p-1.5 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-colors">
-          <ExternalLink size={14} className="text-[#ccab59]" />
-        </button>
+    <div className="bg-white dark:bg-[#1a1f33] border border-slate-200/60 dark:border-white/5 rounded-[14px] overflow-hidden shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
+      {/* Table Header Section */}
+      <div className="p-[16px_20px] border-b border-slate-200/60 dark:border-white/5 flex justify-between items-center bg-white dark:bg-[#1a1f33]">
+        <h3 className="text-[16px] font-[700] text-[#1a1a2e] dark:text-[#f0f0f0] transition-colors">
+          Listing Compliance Audit
+        </h3>
+        <span className="text-[11px] text-slate-400 dark:text-[#8892a4] font-mono font-bold uppercase tracking-tight">
+          {listings.length} listings audited
+        </span>
       </div>
 
+      {/* Table Content */}
       <div className="overflow-x-auto">
-        <table className="w-full text-left">
+        <table className="w-full border-collapse text-[13px]">
           <thead>
-            <tr className="border-b border-slate-100 dark:border-slate-800/50 bg-slate-50/30 dark:bg-transparent text-[10px] font-black text-slate-300 dark:text-slate-500 tracking-widest uppercase">
-              <th className="px-5 py-2.5">Reference ID</th>
-              <th className="px-5 py-2.5">Listing Title</th>
-              <th className="px-5 py-2.5">Score</th>
-              <th className="px-5 py-2.5">Issues</th>
-              <th className="px-5 py-2.5 text-right">Action</th>
+            <tr className="bg-[#f3f0e8] dark:bg-[#1e2440] transition-colors">
+              <th className="p-[12px_14px] text-left text-[10px] font-[700] text-slate-400 dark:text-[#8892a4] uppercase tracking-[0.5px] border-b-2 border-[#c9a84c30]">Ref</th>
+              <th className="p-[12px_14px] text-left text-[10px] font-[700] text-slate-400 dark:text-[#8892a4] uppercase tracking-[0.5px] border-b-2 border-[#c9a84c30]">Listing</th>
+              <th className="p-[12px_14px] text-left text-[10px] font-[700] text-slate-400 dark:text-[#8892a4] uppercase tracking-[0.5px] border-b-2 border-[#c9a84c30]">Score</th>
+              <th className="p-[12px_14px] text-left text-[10px] font-[700] text-slate-400 dark:text-[#8892a4] uppercase tracking-[0.5px] border-b-2 border-[#c9a84c30]">Errors</th>
+              <th className="p-[12px_14px] text-left text-[10px] font-[700] text-slate-400 dark:text-[#8892a4] uppercase tracking-[0.5px] border-b-2 border-[#c9a84c30]">Warnings</th>
+              <th className="p-[12px_14px] text-left text-[10px] font-[700] text-slate-400 dark:text-[#8892a4] uppercase tracking-[0.5px] border-b-2 border-[#c9a84c30]">Status</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-50 dark:divide-slate-800/30">
-            {auditData.map((row) => (
-              <tr key={row.id} className="group hover:bg-slate-50 dark:hover:bg-[#ccab59]/5 transition-colors">
-                <td className="px-5 py-2.5 text-[11px] font-bold text-[#ccab59] group-hover:underline cursor-pointer">
-                  {row.ref}
-                </td>
-                <td className="px-5 py-2.5">
-                  <span className="text-[11px] font-bold text-slate-700 dark:text-slate-200 block truncate max-w-[200px]">
-                    {row.title}
-                  </span>
-                </td>
-                <td className="px-5 py-2.5">
+          <tbody className="divide-y divide-slate-100 dark:divide-white/5">
+            {listings.map((row) => (
+              <tr key={row.ref} className="hover:bg-slate-50 dark:hover:bg-white/5 transition-colors group cursor-pointer">
+                <td className="p-[12px_14px] font-[700] text-[#c9a84c] whitespace-nowrap">{row.ref}</td>
+                <td className="p-[12px_14px] font-[600] text-[#1a1a2e] dark:text-[#f0f0f0] transition-colors">{row.title}</td>
+                <td className="p-[12px_14px]">
                   <div className="flex items-center gap-2">
-                    <div className="w-16 h-1.5 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
+                    <div className="w-[60px] h-[6px] rounded-full bg-slate-100 dark:bg-white/10 overflow-hidden">
                       <div 
-                        className={`h-full rounded-full ${
-                          row.score > 80 ? 'bg-emerald-500' : row.score > 50 ? 'bg-[#ccab59]' : 'bg-red-500'
-                        }`} 
-                        style={{ width: `${row.score}%` }} 
+                        className="h-full rounded-full transition-all duration-1000 ease-out"
+                        style={{ 
+                          width: `${row.score}%`, 
+                          backgroundColor: getScoreColor(row.score) 
+                        }}
                       />
                     </div>
-                    <span className="text-[10px] font-black text-slate-500">{row.score}%</span>
+                    <span className="text-[11px] font-[700]" style={{ color: getScoreColor(row.score) }}>
+                      {row.score}
+                    </span>
                   </div>
                 </td>
-                <td className="px-5 py-2.5">
-                  <div className="flex items-center gap-3">
-                    <IssueBadge count={row.errors} type="error" />
-                    <IssueBadge count={row.warnings} type="warning" />
-                  </div>
-                </td>
-                <td className="px-5 py-2.5 text-right">
-                  <button className="p-1.5 hover:bg-white dark:hover:bg-white/10 rounded-lg shadow-sm border border-slate-100 dark:border-slate-700 transition-all opacity-0 group-hover:opacity-100">
-                    <MoreHorizontal size={14} className="text-slate-400" />
-                  </button>
+                <td className="p-[12px_14px] font-[700] text-[#ef4444] font-mono">{row.errors}</td>
+                <td className="p-[12px_14px] font-[700] text-[#f59e0b] font-mono">{row.warnings}</td>
+                <td className="p-[12px_14px]">
+                  {row.status === 'pass' ? (
+                    <CheckCircle className="w-4 h-4 text-[#10b981]" />
+                  ) : row.status === 'warning' ? (
+                    <AlertTriangle className="w-4 h-4 text-[#f59e0b]" />
+                  ) : (
+                    <XCircle className="w-4 h-4 text-[#ef4444]" />
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-    </div>
-  );
-};
-
-const IssueBadge = ({ count, type }) => {
-  if (count === 0) return <div className="w-4 h-4 rounded bg-slate-50 dark:bg-white/5 opacity-20" />;
-  const isError = type === 'error';
-  return (
-    <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded-full border ${
-      isError 
-        ? 'bg-red-50 border-red-100 text-red-500 dark:bg-red-500/10 dark:border-red-500/20' 
-        : 'bg-[#fdfaf3] border-[#ccab59]/20 text-[#ccab59] dark:bg-[#ccab59]/10'
-    }`}>
-      {isError ? <AlertCircle size={10} /> : <CheckCircle2 size={10} />}
-      <span className="text-[9px] font-black">{count}</span>
     </div>
   );
 };

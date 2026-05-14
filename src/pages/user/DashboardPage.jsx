@@ -11,40 +11,36 @@ import DataSources from '../../components/features/dashboard/DataSources';
 
 const DashboardPage = () => {
   return (
-    <div className="flex flex-col gap-4 py-2 pb-10 min-h-screen animate-in fade-in duration-700">
-      <OwnerDashboard />
-      
-      {/* Trends Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2">
-          <RevenueTrend />
+    <main className="flex-1">
+      <div className="vw-container">
+        <div className="max-w-[1400px] mx-auto">
+          <OwnerDashboard />
+          
+          <div className="grid grid-cols-1 lg:grid-cols-[5fr_3fr] gap-[14px] mb-[18px]">
+            <RevenueTrend />
+            <PortalDistribution />
+          </div>
+
+          <div className="mb-[18px]">
+            <PortalStatusCards />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[14px] mb-[18px]">
+            <TopListings />
+            <AgentPerformance />
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-[14px]">
+            <RecentActivity />
+            <ComplianceOverview />
+          </div>
+
+          <DataSources />
         </div>
-        <div className="lg:col-span-1">
-          <PortalDistribution />
-        </div>
-      </div> 
-      
-      {/* Portal Status Section */}
-      <div className="flex flex-col gap-3">
-        <PortalStatusCards />
       </div>
-
-      {/* Operational Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <TopListings />
-        <AgentPerformance />
-      </div>
-
-      {/* Activity & Compliance Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <RecentActivity />
-        <ComplianceOverview />
-      </div>
-
-      {/* System Section */}
-      <DataSources />
-    </div>
+    </main>
   );
 };
 
 export default DashboardPage;
+

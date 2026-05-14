@@ -1,80 +1,49 @@
 import React from 'react';
-import { 
-  AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Line 
-} from 'recharts';
-
-const data = [
-  { name: 'Sep', revenue: 65, compliance: 85 },
-  { name: 'Oct', revenue: 62, compliance: 88 },
-  { name: 'Nov', revenue: 78, compliance: 90 },
-  { name: 'Dec', revenue: 82, compliance: 92 },
-  { name: 'Jan', revenue: 88, compliance: 95 },
-  { name: 'Feb', revenue: 95, compliance: 98 },
-];
 
 const RevenueTrend = () => {
   return (
-    <div className="bg-white dark:bg-[#1a1c2e]/40 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-[16px] p-4 flex flex-col gap-4 shadow-sm h-full">
-      <div className="flex items-center justify-between">
-        <h3 className="text-[16px] font-serif font-bold text-slate-900 dark:text-white tracking-tight">Business Trends</h3>
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-[#ccab59]" />
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Revenue</span>
+    <div className="bg-white dark:bg-[#1a1c2e] border border-black/5 dark:border-white/5 rounded-xl p-[18px]">
+      <div className="text-[16px] font-bold text-[#1a1a2e] dark:text-white font-serif mb-[10px]">
+        Revenue & Compliance Trend
+      </div>
+      <div>
+        <svg viewBox="0 0 360 180" className="w-full h-[200px]">
+          <defs>
+            <linearGradient id="gGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="5%" stopColor="#c9a84c" stopOpacity="0.2"></stop>
+              <stop offset="95%" stopColor="#c9a84c" stopOpacity="0"></stop>
+            </linearGradient>
+          </defs>
+          <path d="M25,75.78125 L87,82.12890625 L149,53.9453125 L211,47.08984375 L273,33.6328125 L335,25 L335,155 L25,155 Z" fill="url(#gGrad)"></path>
+          <path d="M25,75.78125 L87,82.12890625 L149,53.9453125 L211,47.08984375 L273,33.6328125 L335,25" fill="none" stroke="#c9a84c" strokeWidth="2"></path>
+          <path d="M25,53.599999999999994 L87,49.69999999999999 L149,45.8 L211,43.2 L273,40.599999999999994 L335,36.7" fill="none" stroke="#10b981" strokeWidth="1.5" strokeDasharray="4,3"></path>
+          
+          <g className="text-gray-400 dark:text-gray-500 fill-current">
+            <text x="25" y="174" textAnchor="middle" fontSize="10" fontFamily="'DM Sans','Segoe UI',system-ui,-apple-system,sans-serif">Sep</text>
+            <text x="87" y="174" textAnchor="middle" fontSize="10" fontFamily="'DM Sans','Segoe UI',system-ui,-apple-system,sans-serif">Oct</text>
+            <text x="149" y="174" textAnchor="middle" fontSize="10" fontFamily="'DM Sans','Segoe UI',system-ui,-apple-system,sans-serif">Nov</text>
+            <text x="211" y="174" textAnchor="middle" fontSize="10" fontFamily="'DM Sans','Segoe UI',system-ui,-apple-system,sans-serif">Dec</text>
+            <text x="273" y="174" textAnchor="middle" fontSize="10" fontFamily="'DM Sans','Segoe UI',system-ui,-apple-system,sans-serif">Jan</text>
+            <text x="335" y="174" textAnchor="middle" fontSize="10" fontFamily="'DM Sans','Segoe UI',system-ui,-apple-system,sans-serif">Feb</text>
+          </g>
+
+          <circle cx="25" cy="75.78125" r="3" fill="#c9a84c"></circle>
+          <circle cx="87" cy="82.12890625" r="3" fill="#c9a84c"></circle>
+          <circle cx="149" cy="53.9453125" r="3" fill="#c9a84c"></circle>
+          <circle cx="211" cy="47.08984375" r="3" fill="#c9a84c"></circle>
+          <circle cx="273" cy="33.6328125" r="3" fill="#c9a84c"></circle>
+          <circle cx="335" cy="25" r="3" fill="#c9a84c"></circle>
+        </svg>
+        <div className="flex gap-4 mt-[6px]">
+          <div className="flex items-center gap-[5px] text-[11px] text-gray-400 dark:text-gray-500">
+            <div className="w-[14px] h-[2px] bg-[#c9a84c]"></div>
+            Revenue
           </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-emerald-400" />
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Compliance</span>
+          <div className="flex items-center gap-[5px] text-[11px] text-gray-400 dark:text-gray-500">
+            <div className="w-[14px] h-[2px] bg-[#10b981] border-t border-dashed border-[#10b981]"></div>
+            Compliance
           </div>
         </div>
-      </div>
-
-      <div className="flex-1 w-full min-h-[180px]">
-        <ResponsiveContainer width="100%" height="100%">
-          <AreaChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
-            <defs>
-              <linearGradient id="colorRev" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#ccab59" stopOpacity={0.1}/>
-                <stop offset="95%" stopColor="#ccab59" stopOpacity={0}/>
-              </linearGradient>
-            </defs>
-            <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-            <XAxis
-              dataKey="name"
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }}
-              dy={10}
-            />
-            <YAxis
-              axisLine={false}
-              tickLine={false}
-              tick={{ fill: '#94a3b8', fontSize: 10, fontWeight: 600 }}
-            />
-            <Tooltip
-              contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)', fontSize: '11px' }}
-              itemStyle={{ fontWeight: 'bold', padding: '2px 0' }}
-            />
-            <Area
-              type="monotone"
-              dataKey="revenue"
-              stroke="#ccab59"
-              strokeWidth={2}
-              fillOpacity={1}
-              fill="url(#colorRev)"
-              dot={{ r: 3, fill: '#ccab59', strokeWidth: 2, stroke: '#fff' }}
-              activeDot={{ r: 5, strokeWidth: 0 }}
-            />
-            <Area
-              type="monotone"
-              dataKey="compliance"
-              stroke="#10b981"
-              strokeWidth={2}
-              fill="transparent"
-              dot={{ r: 3, fill: '#10b981', strokeWidth: 2, stroke: '#fff' }}
-            />
-          </AreaChart>
-        </ResponsiveContainer>
       </div>
     </div>
   );

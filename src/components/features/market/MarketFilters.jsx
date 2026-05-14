@@ -5,47 +5,44 @@ const statuses = ['All', 'Off-Plan', 'Ready'];
 
 const MarketFilters = ({ areas = [], selectedArea, activeStatus, onAreaChange, onStatusChange, children }) => {
   return (
-    <div className="rounded-[28px] border border-slate-200 bg-white p-4 sm:p-5 shadow-sm shadow-[#00000008] dark:border-slate-800 dark:bg-slate-950 dark:shadow-[#0000001f]">
-      <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-          <label className="relative block min-w-[220px] rounded-2xl border border-slate-200 bg-slate-50 text-slate-900 overflow-hidden dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100">
-            <select
-              value={selectedArea}
-              onChange={(event) => onAreaChange(event.target.value)}
-              className="w-full appearance-none bg-transparent px-4 py-3 text-sm outline-none text-slate-900 dark:text-slate-100"
-            >
-              {areas.map((area) => (
-                <option key={area} value={area} className="bg-white text-slate-900 dark:bg-slate-950 dark:text-slate-100">
-                  {area}
-                </option>
-              ))}
-            </select>
-            <span className="pointer-events-none absolute inset-y-0 right-4 top-0 flex items-center text-slate-400 dark:text-slate-300">
-              <ChevronDown className="w-4 h-4" />
-            </span>
-          </label>
+    <div className="flex flex-wrap items-center gap-3 mb-6 animate-in fade-in slide-in-from-top-2 duration-500 delay-150">
+      {/* Area Selector */}
+      <div className="relative group">
+        <select
+          value={selectedArea}
+          onChange={(event) => onAreaChange(event.target.value)}
+          className="appearance-none pl-3 pr-9 py-2 rounded-lg border border-slate-200/60 dark:border-white/5 bg-white dark:bg-[#1a1f33] text-[#1a1a2e] dark:text-[#f0f0f0] text-[12px] font-medium focus:outline-none focus:border-[#c9a84c30] transition-all cursor-pointer shadow-sm"
+        >
+          {areas.map((area) => (
+            <option key={area} value={area} className="bg-white dark:bg-[#1a1f33]">
+              {area}
+            </option>
+          ))}
+        </select>
+        <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400 dark:text-[#8892a4] pointer-events-none transition-transform group-hover:translate-y-[-40%]" />
+      </div>
 
-          <div className="flex flex-wrap items-center gap-2 rounded-3xl bg-slate-100 p-1 dark:bg-slate-900">
-            {statuses.map((status) => (
-              <button
-                key={status}
-                type="button"
-                onClick={() => onStatusChange(status)}
-                className={`rounded-full px-4 py-2 text-sm font-semibold transition ${
-                  activeStatus === status
-                    ? 'bg-[#fde9b7] text-slate-950 shadow-sm shadow-[#d8c18c]/30 dark:bg-[#3f351f] dark:text-white'
-                    : 'text-slate-600 hover:bg-slate-200 dark:text-slate-300 dark:hover:bg-slate-800'
-                }`}
-              >
-                {status}
-              </button>
-            ))}
-          </div>
-        </div>
+      {/* Status Toggle */}
+      <div className="flex gap-0.5 bg-[#f3f0e8] dark:bg-white/5 rounded-lg p-[3px] shadow-inner">
+        {statuses.map((status) => (
+          <button
+            key={status}
+            type="button"
+            onClick={() => onStatusChange(status)}
+            className={`px-4 py-1.5 rounded-md text-[11px] font-[700] transition-all duration-200 uppercase tracking-tight ${
+              activeStatus === status
+                ? 'bg-white dark:bg-[#c9a84c1a] text-[#a38847] dark:text-[#c9a84c] shadow-sm'
+                : 'text-slate-500 dark:text-[#8892a4] hover:text-[#a38847] dark:hover:text-[#c9a84c]'
+            }`}
+          >
+            {status}
+          </button>
+        ))}
+      </div>
 
-        <div className="flex justify-start lg:justify-end">
-          {children}
-        </div>
+      {/* Action Slot (Export Button) */}
+      <div className="ml-auto">
+        {children}
       </div>
     </div>
   );

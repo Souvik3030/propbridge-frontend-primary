@@ -3,66 +3,66 @@ import { MapPin } from 'lucide-react';
 
 const FeaturedProjects = () => {
   const projects = [
-    { name: 'Creek Bay', location: 'Dubai Creek Harbour', price: 'AED 1.8M', developer: 'Emaar', points: '75 pts', image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=800' },
-    { name: 'Creek Haven', location: 'Dubai Creek Harbour', price: 'AED 1.9M', developer: 'Emaar', points: '75 pts', image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=800' },
-    { name: 'Silva', location: 'Dubai Creek Harbour', price: 'AED 1.8M', developer: 'Emaar', points: '75 pts', image: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?q=80&w=800' },
-    { name: 'Greencrest', location: 'Dubai Hills Estate', price: 'AED 1.6M', developer: 'Emaar', points: '75 pts', image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=800' },
-    { name: 'Parkside Hills', location: 'Dubai Hills Estate', price: 'AED 1.5M', developer: 'Emaar', points: '75 pts', image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800' },
-    { name: 'Club Drive Tower B', location: 'Dubai Hills Estate', price: 'AED 1.5M', developer: 'Emaar', points: '75 pts', image: 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=800' },
-    { name: 'Address Residences', location: 'Dubai Creek Harbour', price: 'AED 2.0M', developer: 'Emaar', points: '75 pts', image: 'https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?q=80&w=800' },
-    { name: 'Arlo at Creek Beach', location: 'Dubai Creek Harbour', price: 'AED 1.7M', developer: 'Emaar', points: '75 pts', image: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=800' },
+    { name: 'Creek Bay', location: 'Dubai Creek Harbour', price: 'AED 1.8M', developer: 'Emaar', points: '75', image: 'https://bayut-production.s3.eu-central-1.amazonaws.com/image/809900237/f6d56604ba684ae3bccdec57b3ff943e' },
+    { name: 'Creek Haven', location: 'Dubai Creek Harbour', price: 'AED 1.9M', developer: 'Emaar', points: '75', image: 'https://bayut-production.s3.eu-central-1.amazonaws.com/image/808562989/a6ca95a2f6314384aa7dd26f439bfa0c' },
+    { name: 'Silva', location: 'Dubai Creek Harbour', price: 'AED 1.8M', developer: 'Emaar', points: '75', image: 'https://bayut-production.s3.eu-central-1.amazonaws.com/image/781213566/b48564fd089c47a1ab0480247e3db354' },
+    { name: 'Greencrest', location: 'Dubai Hills Estate', price: 'AED 1.6M', developer: 'Emaar', points: '75', image: 'https://bayut-production.s3.eu-central-1.amazonaws.com/image/816168383/c16298ffc2554e4f96028ba6b072edf9' },
+    { name: 'Parkside Hills', location: 'Dubai Hills Estate', price: 'AED 1.5M', developer: 'Emaar', points: '75', image: 'https://bayut-production.s3.eu-central-1.amazonaws.com/image/706575954/9f99b2d9fc5c42628a8cf1981a50711e' },
+    { name: 'Club Drive Tower B', location: 'Dubai Hills Estate', price: 'AED 1.5M', developer: 'Emaar', points: '75', image: 'https://bayut-production.s3.eu-central-1.amazonaws.com/image/698364758/0974d48718f34975ba43e9576de4c9e0' },
+    { name: 'Address Residences', location: 'Dubai Creek Harbour', price: 'AED 2.0M', developer: 'Emaar', points: '75', image: 'https://bayut-production.s3.eu-central-1.amazonaws.com/image/737532101/3958d6877ee040cdabf5cd8f7ae398c1' },
+    { name: 'Arlo at Creek Beach Harbour', location: 'Dubai Creek Harbour', price: 'AED 1.7M', developer: 'Emaar', points: '75', image: 'https://bayut-production.s3.eu-central-1.amazonaws.com/image/710392656/6e28b93bea9d407cbb0a1b2974cc7a04' },
   ];
 
   return (
-    <section className="py-8">
-      {/* Header Section */}
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center gap-3">
-          <div className="w-[3px] h-6 bg-[#b89146]"></div>
-          <h2 className="text-2xl font-bold text-[#0f172a] dark:text-white font-serif">Featured Projects</h2>
+    <div className="mb-8">
+      {/* Header */}
+      <div className="flex items-center justify-between mb-[18px]">
+        <div className="flex items-center gap-[10px]">
+          <div className="w-1 h-6 rounded-[2px] bg-[linear-gradient(rgb(201,168,76),rgb(245,158,11))]"></div>
+          <h2 className="text-[22px] font-bold font-serif text-[#111424] dark:text-[#f0f0f0] m-0 transition-colors">Featured Projects</h2>
         </div>
-        <button className="px-5 py-1.5 text-xs font-semibold text-[#b89146] bg-[#fdfcf8] border border-[#f3eee0] rounded-lg hover:bg-[#f3eee0] transition-colors">
+        <button className="px-4 py-2 rounded-[10px] border border-[#c9a84c2e] bg-transparent text-[#a38847] dark:text-[#c9a84c] text-[12px] font-semibold cursor-pointer transition-all hover:bg-[#c9a84c10] hover:border-[#c9a84c50]">
           View All
         </button>
       </div>
 
-      {/* Grid Layout */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {projects.map((project, idx) => (
-          <div key={idx} className="group bg-white dark:bg-[#111827] rounded-2xl border border-[#ece7d9] dark:border-slate-800 overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-            
+          <div 
+            key={idx}
+            className="group bg-white dark:bg-[#1a1f33] border border-slate-200/60 dark:border-white/5 rounded-[16px] overflow-hidden cursor-pointer transition-all duration-200 hover:scale-[1.02] hover:shadow-xl dark:hover:shadow-none dark:hover:border-white/10"
+          >
             {/* Image Container */}
-            <div className="relative h-44 overflow-hidden">
+            <div className="relative h-[170px] overflow-hidden">
               <img 
                 src={project.image} 
                 alt={project.name} 
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
               />
               {/* Points Badge */}
-              <div className="absolute top-3 right-3">
-                <div className="px-2 py-1 bg-white/90 backdrop-blur-sm rounded-md border border-gray-100 flex items-center gap-1">
-                  <span className="text-[11px] font-bold text-[#b89146]">{project.points.split(' ')[0]}</span>
-                  <span className="text-[9px] font-medium text-gray-400 uppercase">{project.points.split(' ')[1]}</span>
-                </div>
+              <div className="absolute top-2.5 right-2.5 px-2.5 py-1 rounded-[8px] bg-white/90 dark:bg-[#0a0e1ab3] backdrop-blur-md border border-slate-200 dark:border-[#c9a84c2e] flex items-center gap-1 transition-colors">
+                <span className="text-[11px] font-extrabold text-[#a38847] dark:text-[#c9a84c] font-mono">{project.points}</span>
+                <span className="text-[9px] font-medium text-slate-400 dark:text-[#8892a4]">pts</span>
               </div>
             </div>
 
             {/* Content Area */}
             <div className="p-4">
-              <h3 className="text-[15px] font-bold text-slate-800 dark:text-white mb-1 tracking-tight">
+              <h3 className="text-[14px] font-bold text-[#111424] dark:text-[#f0f0f0] mb-1.5 truncate leading-snug transition-colors">
                 {project.name}
               </h3>
               
-              <div className="flex items-center gap-1 text-slate-400 dark:text-slate-500 mb-6">
-                <MapPin className="w-3 h-3" />
-                <span className="text-[11px] font-medium">{project.location}</span>
+              <div className="flex items-center gap-1.5 text-[12px] text-slate-400 dark:text-[#8892a4] mb-2.5 transition-colors">
+                <MapPin className="w-3 h-3 stroke-slate-400 dark:stroke-[#8892a4]" />
+                <span className="truncate">{project.location}</span>
               </div>
 
-              <div className="flex items-center justify-between">
-                <p className="text-[14px] font-bold text-[#ccab59] tracking-wide">
+              <div className="flex justify-between items-center pt-2.5 border-t border-slate-100 dark:border-white/5 transition-colors">
+                <span className="text-[15px] font-bold text-[#a38847] dark:text-[#c9a84c] font-mono transition-colors">
                   {project.price}
-                </p>
-                <span className="text-[10px] font-medium text-slate-400 uppercase tracking-widest">
+                </span>
+                <span className="text-[10px] text-slate-400 dark:text-[#8892a4] font-medium transition-colors uppercase">
                   {project.developer}
                 </span>
               </div>
@@ -70,8 +70,8 @@ const FeaturedProjects = () => {
           </div>
         ))}
       </div>
-    </section>
+    </div>
   );
 };
 
-export default FeaturedProjects;
+export default FeaturedProjects;

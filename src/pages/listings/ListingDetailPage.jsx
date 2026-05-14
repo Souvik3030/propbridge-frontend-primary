@@ -21,6 +21,15 @@ const ListingDetailPage = () => {
   // PF API Integration
   const { data: pfListing, isLoading, error } = usePFListing(id);
 
+  // Helper to format slugs (e.g. "central-ac" -> "Central AC")
+  const formatAmenity = (slug) => {
+    if (!slug) return '';
+    return slug
+      .split('-')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  };
+
   // Helper to safely extract string from i18n objects
   const translate = (val) => {
     if (typeof val === 'string') return val;
@@ -34,35 +43,35 @@ const ListingDetailPage = () => {
   const listing = rawData ? {
     ...rawData,
     id: rawData.id,
-    reference: rawData.pf_reference || rawData.reference || `PF-${rawData.id}`,
+    reference: rawData.pf_reference || rawData.reference || `PF-${rawData.id.substring(0, 8)}`,
     title: translate(rawData.title),
-    status: rawData.status === 'published' ? 'Live' : (rawData.status?.replace('_', ' ') || 'POCKET'),
-    price: rawData.price?.formatted || (rawData.price?.value ? `AED ${rawData.price.value}` : 'Price on Request'),
+    status: rawData.status === 'published' ? 'Live' : (rawData.status === 'compliance_failed' ? 'Under Approval' : rawData.status?.charAt(0).toUpperCase() + rawData.status?.slice(1) || 'Draft'),
+    price: rawData.price?.formatted || (rawData.price?.value ? `AED ${rawData.price.value.toLocaleString()}` : 'Price on Request'),
     subPrice: rawData.listing_type === 'rent' ? 'AED / YEAR' : 'Total Price',
     beds: rawData.specifications?.bedrooms || 0,
     baths: rawData.specifications?.bathrooms || 0,
-    sqft: rawData.specifications?.size_sqft ? `${rawData.specifications.size_sqft} sq.ft` : '-',
-    type: rawData.property_type?.replace?.('_', ' ') || rawData.category || 'Apartment',
-    community: rawData.emirate?.replace?.('_', ' ') || 'Dubai',
+    sqft: rawData.specifications?.size_sqft ? `${rawData.specifications.size_sqft.toLocaleString()} sq.ft` : '-',
+    type: rawData.property_type?.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') || rawData.category || 'Apartment',
+    community: rawData.emirate?.charAt(0).toUpperCase() + rawData.emirate?.slice(1) || 'Dubai',
     subCommunity: rawData.building_name || 'Synced from PF',
     images: rawData.images || [],
-    desc: rawData.description || '',
-    permit: rawData.permit_number || rawData.dld_permit_number,
-    purpose: rawData.listing_type,
-    category: rawData.category,
-    furnished: rawData.specifications?.furnished || 'No',
+    desc: translate(rawData.description) || '',
+    permit: rawData.permit_number || rawData.dld_permit_number || '-',
+    purpose: rawData.listing_type?.toUpperCase() || 'SALE',
+    category: rawData.category?.charAt(0).toUpperCase() + rawData.category?.slice(1) || 'Residential',
+    furnished: rawData.specifications?.furnished?.charAt(0).toUpperCase() + rawData.specifications?.furnished?.slice(1) || 'Unfurnished',
     floor: rawData.specifications?.floor_number || '-',
-    developer: rawData.developer_name || '-',
+    developer: rawData.building_name || '-',
     permitDate: rawData.updated_at ? new Date(rawData.updated_at).toLocaleDateString() : '-',
     agent: rawData.agent?.name || '-',
     owner: rawData.company?.name || '-',
-    city: rawData.emirate || '-',
-    emirate: rawData.emirate || '-',
+    city: rawData.emirate?.charAt(0).toUpperCase() + rawData.emirate?.slice(1) || '-',
+    emirate: rawData.emirate?.charAt(0).toUpperCase() + rawData.emirate?.slice(1) || '-',
     offPlan: rawData.project_status === 'off_plan' ? 'Yes' : 'No',
-    propertyStatus: rawData.project_status || '-',
+    propertyStatus: rawData.project_status?.replace('_', ' ').toUpperCase() || 'COMPLETED',
     parkings: rawData.specifications?.parking || '-',
-    amenities: rawData.amenities || [],
-    score: rawData.compliance_snapshot?.score ?? 0,
+    amenities: (rawData.amenities || []).map(formatAmenity),
+    score: rawData.is_compliant ? 100 : (rawData.validation_diffs?.length > 0 ? 45 : 0),
     views: rawData.views ?? 0,
     isCompliant: rawData.is_compliant,
     canPublish: rawData.can_publish,
@@ -97,10 +106,9 @@ const ListingDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen pb-20 fade-in">
-      <div className="max-w-[1200px] mx-auto px-4">
+    <div className="min-h-screen bg-[#f5f2eb] dark:bg-[#0a0e1a] text-slate-900 dark:text-[#f0f0f0] pb-10 font-['DM_Sans',_sans-serif] transition-colors duration-300">
+      <div className="max-w-[1400px] mx-auto px-4 pt-4">
         
-        {/* Previous UI Components */}
         <DetailHeader onBack={() => navigate('/listings')} />
         <TopInfoCard listing={listing} />
         <DetailStats listing={listing} />

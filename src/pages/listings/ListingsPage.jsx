@@ -7,7 +7,15 @@ import ListingsTable from '../../components/features/listings/table/ListingsTabl
 const ListingsPage = () => {
   const navigate = useNavigate();
   const searchQuery = '';
-  const { data: pfData, isLoading } = usePFListings();
+  const [page, setPage] = React.useState(1);
+  const { data: pfData, isLoading } = usePFListings({ page });
+
+  const paginationMeta = pfData?.meta || {
+    current_page: 1,
+    last_page: 1,
+    total: 0,
+    per_page: 15
+  };
 
   const handleRowClick = (e, id) => {
     if (e.target.closest('input[type="checkbox"]') || e.target.closest('button')) return;
@@ -39,10 +47,10 @@ const ListingsPage = () => {
 
   return (
     <div className="min-h-screen bg-[#f5f2eb] dark:bg-[#0a0d18] transition-colors duration-300">
-      <div className="max-w-[1550px] mx-auto p-4 md:p-6 lg:p-8">
+      <div className="max-w-[1550px] mx-auto p-1 md:p-2 lg:p-4">
         
         {/* Sub-Header Actions */}
-        <div className="flex items-center justify-between mb-3.5">
+        <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2.5">
             <button className="bg-[#2563eb] text-white px-4 py-2 rounded-lg flex items-center gap-1.5 text-[14px] font-bold hover:bg-blue-700 transition-all border-none font-['DM_Sans',_sans-serif]">
               <Filter size={14} className="stroke-white" />
@@ -86,6 +94,8 @@ const ListingsPage = () => {
           <ListingsTable
             listings={filteredListings}
             onRowClick={handleRowClick}
+            pagination={paginationMeta}
+            onPageChange={setPage}
           />
         )}
       </div>

@@ -20,28 +20,31 @@ const OverviewContent = ({ listing }) => {
   ];
 
   return (
-    <div className="bg-white dark:bg-[#12161F] border border-[#ece7d9] dark:border-[#1E2530] rounded-[1.5rem] p-7 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 gap-x-10 mb-8">
+    <div className="bg-white dark:bg-[#1a1f35] border border-black/5 dark:border-white/10 rounded-xl p-4 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-500 transition-colors">
+      {/* Specs Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-0.5 mb-4">
         {details.map((item, i) => (
-          <div key={i} className="flex items-center justify-between border-b border-[#f3efe6] dark:border-slate-800/50 pb-3">
-            <span className="text-[12px] font-bold text-slate-400 dark:text-[#576273]">{item.label}</span>
-            <span className="text-[13px] font-black text-slate-800 dark:text-white">{item.value}</span>
+          <div key={i} className="flex items-center justify-between py-1.5 border-b border-black/5 dark:border-white/5 last:border-none">
+            <span className="text-[12px] text-slate-500 dark:text-[#8892a4]">{item.label}</span>
+            <span className="text-[12px] font-bold text-slate-900 dark:text-[#f0f0f0]">{item.value}</span>
           </div>
         ))}
       </div>
 
-      <div className="mb-8">
-        <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-3">Description</h3>
-        <p className="text-[14px] leading-relaxed text-slate-600 dark:text-slate-400 max-w-4xl">
+      {/* Description Section */}
+      <div className="pt-4 border-t border-black/5 dark:border-white/5">
+        <h3 className="text-[11px] font-bold text-slate-400 dark:text-[#4d5a78] uppercase tracking-wider mb-2">Description</h3>
+        <p className="text-[13px] leading-relaxed text-slate-600 dark:text-[#8892a4] whitespace-pre-line">
           {listing.desc}
         </p>
       </div>
 
-      <div>
-        <h3 className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-3">Amenities</h3>
+      {/* Amenities Section */}
+      <div className="mt-4 pt-4 border-t border-black/5 dark:border-white/5">
+        <h3 className="text-[11px] font-bold text-slate-400 dark:text-[#4d5a78] uppercase tracking-wider mb-2">Amenities</h3>
         <div className="flex flex-wrap gap-1.5">
           {listing.amenities.map(tag => (
-            <span key={tag} className="px-3 py-1.5 bg-[#fdfaf3] dark:bg-slate-800 border border-[#ece7d9] dark:border-slate-700 text-slate-600 dark:text-slate-300 rounded-lg text-[12px] font-bold">
+            <span key={tag} className="px-2.5 py-1 bg-[#c9a84c12] border border-[#c9a84c1e] text-slate-600 dark:text-[#8892a4] rounded-md text-[11px] font-semibold">
               {tag}
             </span>
           ))}

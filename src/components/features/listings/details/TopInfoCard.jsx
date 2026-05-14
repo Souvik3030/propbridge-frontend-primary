@@ -11,46 +11,47 @@ const TopInfoCard = ({ listing }) => {
   const handleReject = (reason) => {
     console.log(`Listing ${listing.id} rejected. Reason: ${reason}`);
     setIsRejectModalOpen(false);
-    // Add additional logic here (e.g., API call)
   };
 
+  const btnBase = "display-inline-flex items-center gap-1 px-3 py-1.5 font-bold text-[12px] rounded-lg cursor-pointer transition-all duration-150 active:scale-95 font-['DM_Sans',_sans-serif] tracking-tight border-none";
+
   return (
-    <div className="bg-white dark:bg-[#12161F] border border-[#ece7d9] dark:border-[#1E2530] rounded-[1.5rem] p-6 mb-5 shadow-sm">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="space-y-3">
+    <div className="bg-white dark:bg-[#1a1f35] border border-black/5 dark:border-white/10 rounded-xl p-4 mb-2 shadow-sm">
+      <div className="flex items-start justify-between gap-4">
+        <div className="space-y-1">
           <div className="flex items-center gap-2">
-            <span className="text-[11px] font-bold text-slate-400 dark:text-[#576273] uppercase tracking-widest">{listing.reference || listing.id}</span>
-            <span className="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/20 text-blue-500 dark:text-blue-400 rounded-lg text-[10px] font-black uppercase tracking-wider">
+            <span className="text-[12px] font-bold text-[#c9a84c]">{listing.reference}</span>
+            <span className={`px-2 py-0.5 rounded-md text-[10px] font-bold whitespace-nowrap bg-blue-500/10 text-blue-500 border border-blue-500/20`}>
               {listing.status}
             </span>
           </div>
           <div>
-            <h1 className="text-[22px] font-black text-slate-900 dark:text-white leading-tight mb-1">{listing.title}</h1>
-            <div className="flex items-center gap-2 text-slate-400 dark:text-slate-500">
-              <MapPin size={14} className="text-[#ccab59]" />
-              <span className="text-[13px] font-medium">{listing.community} - {listing.subCommunity}</span>
+            <h1 className="text-[18px] font-extrabold text-slate-900 dark:text-[#f0f0f0] font-['Playfair_Display',_serif] mb-0.5">{listing.title}</h1>
+            <div className="flex items-center gap-1 text-[12px] text-slate-500 dark:text-[#8892a4] font-medium">
+              <MapPin size={12} strokeWidth={2.5} />
+              {listing.community} · {listing.subCommunity}
             </div>
           </div>
         </div>
         
         <div className="flex flex-wrap items-center gap-2">
-          <button className="flex items-center gap-2 px-4 py-1.5 bg-[#10b981] text-white rounded-lg font-black text-[13px] hover:bg-[#059669] transition-all shadow-md shadow-emerald-500/10">
-            <CheckCircle2 size={16} /> Approve
+          <button className={`${btnBase} bg-[#10b981] text-[#0a0e1a]`}>
+            <CheckCircle2 size={13} /> Approve
           </button>
           <button 
             onClick={() => setIsRejectModalOpen(true)}
-            className="flex items-center gap-2 px-4 py-1.5 bg-white dark:bg-slate-800 text-red-500 rounded-lg font-bold text-[13px] border border-red-200 dark:border-red-900/30 hover:bg-red-50 transition-all"
+            className={`${btnBase} bg-transparent text-[#ef4444] border border-[#ef4444]`}
           >
-            <XCircle size={16} /> Reject
+            <XCircle size={13} /> Reject
           </button>
-          <button className="flex items-center gap-2 px-4 py-1.5 bg-[#ccab59] text-white rounded-lg font-black text-[13px] hover:bg-[#b89a4f] transition-all shadow-md shadow-[#ccab59]/10">
-            <Send size={16} /> Publish All
+          <button className={`${btnBase} bg-gradient-to-br from-[#c9a84c] to-[#a88a3e] text-[#0a0e1a]`}>
+            <Send size={13} /> Publish All
           </button>
           <button 
             onClick={() => navigate(`/listings/edit/${listing.id}`)}
-            className="flex items-center gap-2 px-3 py-1.5 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-lg font-bold text-[13px] border border-[#ece7d9] dark:border-slate-700 hover:bg-slate-50 transition-all"
+            className={`${btnBase} bg-transparent text-[#c9a84c] border border-[#c9a84c]/20`}
           >
-            <Edit3 size={16} /> Edit
+            <Edit3 size={13} /> Edit
           </button>
           
           <ActionDropdown listingId={listing.id} align="right" />

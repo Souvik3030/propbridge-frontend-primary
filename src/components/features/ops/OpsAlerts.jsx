@@ -1,5 +1,5 @@
 import React from 'react';
-import { XCircle, AlertTriangle, Bell } from 'lucide-react';
+import { XCircle, AlertTriangle, Bell, ArrowRight } from 'lucide-react';
 
 const alertData = [
   {
@@ -39,47 +39,52 @@ const alertData = [
 const AlertCard = ({ alert }) => {
   const styles = {
     critical: {
-      border: 'border-l-[3px] border-l-red-500',
-      badge: 'bg-red-50 text-red-500 dark:bg-red-500/10 dark:text-red-400',
-      icon: <XCircle size={12} className="text-red-500" />
+      accent: 'bg-[#ef4444]',
+      badge: 'bg-red-50 text-[#ef4444] dark:bg-red-500/10 dark:text-red-400',
+      icon: <XCircle size={14} className="text-[#ef4444]" />
     },
     warning: {
-      border: 'border-l-[3px] border-l-[#ccab59]',
-      badge: 'bg-orange-50 text-[#ccab59] dark:bg-[#ccab59]/10 dark:text-[#ccab59]',
-      icon: <AlertTriangle size={12} className="text-[#ccab59]" />
+      accent: 'bg-[#f59e0b]',
+      badge: 'bg-orange-50 text-[#f59e0b] dark:bg-orange-500/10 dark:text-orange-400',
+      icon: <AlertTriangle size={14} className="text-[#f59e0b]" />
     },
     info: {
-      border: 'border-l-[3px] border-l-blue-500',
-      badge: 'bg-blue-50 text-blue-500 dark:bg-blue-500/10 dark:text-blue-400',
-      icon: <Bell size={12} className="text-blue-500" />
+      accent: 'bg-[#3b82f6]',
+      badge: 'bg-blue-50 text-[#3b82f6] dark:bg-blue-500/10 dark:text-blue-400',
+      icon: <Bell size={14} className="text-[#3b82f6]" />
     }
   };
 
   const style = styles[alert.type] || styles.info;
 
   return (
-    <div className={`bg-white dark:bg-[#1a1c2e]/40 backdrop-blur-xl border border-slate-100 dark:border-slate-800 rounded-[16px] p-4 flex items-start gap-3.5 transition-all hover:shadow-md animate-in fade-in slide-in-from-bottom-2 duration-500 ${style.border}`}>
-      <div className={`mt-0.5 p-1.5 rounded-lg ${alert.type === 'critical' ? 'bg-red-50 dark:bg-red-500/5' : 'bg-[#fdfaf3] dark:bg-white/5'}`}>
-        {style.icon}
-      </div>
-      
-      <div className="flex flex-col gap-1 flex-1">
-        <div className="flex items-center gap-2">
-          <span className={`px-1.5 py-0.5 rounded text-[8px] font-black tracking-widest ${style.badge}`}>
-            {alert.severity}
-          </span>
-          <span className="text-[10px] text-slate-400 font-medium">
-            {alert.time}
-          </span>
-        </div>
-        
-        <div className="flex flex-col">
-          <h4 className="text-[13px] font-bold text-slate-800 dark:text-white leading-tight">
-            {alert.title}
-          </h4>
-          <p className="text-[11px] text-slate-400 font-medium leading-relaxed mt-0.5">
-            {alert.description}
-          </p>
+    <div className="bg-white dark:bg-[#1a1f33] border border-black/5 dark:border-white/5 rounded-[16px] overflow-hidden shadow-sm hover:shadow-md transition-all duration-300 group animate-in fade-in slide-in-from-bottom-2 duration-500">
+      <div className="flex items-stretch h-full">
+        <div className={`w-1.5 shrink-0 ${style.accent}`} />
+        <div className="p-4 flex-1 flex items-start gap-4">
+          <div className="mt-1 flex items-center justify-center">
+            {style.icon}
+          </div>
+          
+          <div className="flex flex-col gap-1.5 flex-1">
+            <div className="flex items-center justify-between">
+              <span className={`px-2 py-0.5 rounded-full text-[9px] font-[800] tracking-tight ${style.badge}`}>
+                {alert.severity}
+              </span>
+              <span className="text-[11px] text-slate-400 dark:text-[#8892a4] font-medium transition-colors">
+                {alert.time}
+              </span>
+            </div>
+            
+            <div className="flex flex-col">
+              <h4 className="text-[15px] font-[800] text-[#1a1a2e] dark:text-[#f0f0f0] font-serif leading-tight transition-colors">
+                {alert.title}
+              </h4>
+              <p className="text-[12px] text-slate-400 dark:text-[#8892a4] font-medium leading-relaxed mt-1.5 transition-colors">
+                {alert.description}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -88,16 +93,23 @@ const AlertCard = ({ alert }) => {
 
 const OpsAlerts = () => {
   return (
-    <div className="flex flex-col gap-2.5 w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
-      {alertData.map((alert) => (
-        <AlertCard key={alert.id} alert={alert} />
-      ))}
+    <div className="flex flex-col gap-3 w-full animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="flex justify-between items-center mb-1 px-1">
+        <h3 className="text-[14px] font-[800] text-[#1a1a2e] dark:text-[#f0f0f0] font-serif">System Alerts</h3>
+        <button className="text-[11px] font-bold text-[#c9a84c] hover:underline uppercase tracking-tight">Mark all read</button>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        {alertData.map((alert) => (
+          <AlertCard key={alert.id} alert={alert} />
+        ))}
+      </div>
       
-      <div className="mt-3 flex justify-center">
-        <button className="text-[11px] font-bold text-slate-400 hover:text-[#ccab59] transition-colors flex items-center gap-1.5">
-          <span>View all notifications</span>
-          <div className="w-4 h-4 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center">
-            <span className="text-[10px]">→</span>
+      <div className="mt-4 flex justify-center">
+        <button className="text-[11px] font-[800] text-slate-400 dark:text-[#8892a4] hover:text-[#c9a84c] dark:hover:text-[#c9a84c] transition-all flex items-center gap-2 group">
+          <span>VIEW NOTIFICATION HISTORY</span>
+          <div className="w-5 h-5 rounded-full bg-slate-100 dark:bg-white/5 flex items-center justify-center group-hover:translate-x-1 transition-transform">
+            <ArrowRight size={10} />
           </div>
         </button>
       </div>

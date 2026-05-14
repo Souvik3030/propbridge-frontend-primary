@@ -1,100 +1,79 @@
 import React from 'react';
-import { Radio, RefreshCw, Trash2 } from 'lucide-react';
 
-const DataSourceCard = ({ title, status, details, action, color }) => {
-  const colorMap = {
-    emerald: 'text-[#10b981]',
-    slate: 'text-slate-300',
-    blue: 'text-[#3b82f6]',
-    gold: 'text-[#ccab59]',
-  };
-
-  return (
-    <div className="bg-white dark:bg-[#1a1c2e]/60 border border-slate-100 dark:border-slate-800 rounded-2xl p-4 flex flex-col gap-3 shadow-sm h-full">
-      <div className="flex items-center gap-2.5">
-        <div className={`w-2 h-2 rounded-full bg-current ${colorMap[color]}`} />
-        <h4 className="text-[14px] font-serif font-bold text-slate-900 dark:text-white leading-tight">{title}</h4>
-      </div>
-      
-      <div className="flex flex-col gap-1 flex-1 mt-0.5">
-        {status && (
-           <p className="text-[12px] font-bold text-slate-400 dark:text-slate-500">
-             Status: <span className={colorMap[color]}>{status}</span>
-           </p>
-        )}
-        {details.map((detail, idx) => (
-          <p key={idx} className="text-[12px] font-bold text-slate-400 dark:text-slate-500">
-            {detail.label}{detail.value ? ': ' : ''}
-            <span className={detail.label.includes('Upload CSV') ? 'text-[#ccab59]' : 'text-slate-800 dark:text-white'}>
-              {detail.value}
-            </span>
-          </p>
-        ))}
-      </div>
-
-      {action && !action.link && (
-        <button className={`mt-3 w-max px-4 py-1.5 border rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all transform active:scale-95 flex items-center gap-2 ${
-          action.special ? 'border-[#ccab59] text-[#ccab59] hover:bg-[#ccab59]/5' : 'border-slate-200 text-slate-500 hover:bg-slate-50'
-        }`}>
-          {action.label}
-        </button>
-      )}
-      
-      {action?.link && (
-        <button className="text-[10px] font-bold text-[#ccab59] hover:underline uppercase tracking-widest text-left mt-1.5 flex items-center gap-1">
-          {action.label}
-        </button>
-      )}
+const DataSourceCard = ({ title, status, statusColor, details, actionLabel, actionLink, isButton }) => (
+  <div className="bg-white dark:bg-[#1a1c2e] border border-black/5 dark:border-white/5 rounded-xl p-4">
+    <div className="flex items-center gap-2 mb-[10px]">
+      <div className={`w-[10px] h-[10px] rounded-full ${statusColor}`}></div>
+      <strong className="text-[14px] text-[#1a1a2e] dark:text-white">{title}</strong>
     </div>
-  );
-};
+    <div className="text-[12px] text-gray-500 dark:text-gray-400 leading-[1.8]">
+      {details.map((detail, index) => (
+        <div key={index}>
+          {detail.label}: <span className={detail.important ? 'font-bold text-[#1a1a2e] dark:text-gray-200' : ''}>{detail.value}</span>
+        </div>
+      ))}
+    </div>
+    {actionLabel && (
+      isButton ? (
+        <button className="mt-[10px] px-[14px] py-[6px] rounded-lg border border-[#c9a84c] dark:border-[#c9a84c]/50 bg-transparent text-[#c9a84c] text-[11px] font-bold cursor-pointer transition-colors hover:bg-[#c9a84c]/10">
+          {actionLabel}
+        </button>
+      ) : (
+        <a href={actionLink} target="_blank" rel="noopener noreferrer" className="inline-block mt-[10px] text-[11px] text-[#c9a84c] font-bold no-underline transition-colors hover:text-[#c9a84c]/80">
+          {actionLabel}
+        </a>
+      )
+    )}
+  </div>
+);
 
 const DataSources = () => {
   return (
-    <div className="bg-white dark:bg-[#1a1c2e]/40 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-[16px] p-5 flex flex-col gap-5 shadow-sm">
-      <div className="flex items-center gap-2.5">
-        <div className="text-[#ccab59] flex items-center justify-center">
-           <Radio size={18} strokeWidth={2.5} />
-        </div>
-        <h3 className="text-[16px] font-serif font-bold text-slate-900 dark:text-white tracking-tight">
-          Data Sources
+    <div className="mt-[18px]">
+      <div className="bg-white dark:bg-[#1a1c2e] border border-black/5 dark:border-white/5 rounded-xl p-5">
+        <h3 className="text-[16px] font-extrabold font-serif text-[#1a1a2e] dark:text-white mb-4 flex items-center gap-2">
+          📡 Data Sources
         </h3>
-      </div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-        <DataSourceCard 
-          title="Bayut API (RapidAPI)"
-          status="Connected"
-          color="emerald"
-          details={[
-            { label: 'Projects', value: '2,181' },
-            { label: 'API Today', value: '0 / 1,600' },
-            { label: 'Last refresh', value: 'Never' }
-          ]}
-          action={{ label: 'Force Full Refresh', special: true }}
-        />
-        
-        <DataSourceCard 
-          title="DLD Open Data"
-          color="slate"
-          details={[
-            { label: 'Not imported — Upload CSV', value: '' }
-          ]}
-          action={{ label: 'Download CSV →', link: true }}
-        />
-        
-        <DataSourceCard 
-          title="Storage Usage"
-          color="blue"
-          details={[
-            { label: 'DLD Data', value: '0.00 MB' },
-            { label: 'API Cache', value: '0.09 MB' }
-          ]}
-          action={{ label: 'Clean Old Caches' }}
-        />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-[14px]">
+          <DataSourceCard 
+            title="Bayut API (RapidAPI)"
+            status="Connected"
+            statusColor="bg-emerald-500"
+            details={[
+              { label: "Status", value: "Connected", important: true },
+              { label: "Projects", value: "2,181", important: true },
+              { label: "API Today", value: "0 / 1,600", important: true },
+              { label: "Last refresh", value: "Never", important: true },
+            ]}
+            actionLabel="Force Full Refresh"
+            isButton={true}
+          />
+          <DataSourceCard 
+            title="DLD Open Data"
+            status="Not imported"
+            statusColor="bg-gray-400"
+            details={[
+              { label: "Not imported — ", value: "Upload CSV", important: false },
+            ]}
+            actionLabel="Download CSV →"
+            actionLink="https://dubailand.gov.ae/en/open-data/real-estate-data/"
+          />
+          <DataSourceCard 
+            title="Storage Usage"
+            status="Active"
+            statusColor="bg-blue-500"
+            details={[
+              { label: "DLD Data", value: "0.00 MB", important: true },
+              { label: "API Cache", value: "0.00 MB", important: true },
+            ]}
+            actionLabel="Clean Old Caches"
+            isButton={true}
+          />
+        </div>
       </div>
     </div>
   );
 };
 
 export default DataSources;
+

@@ -12,51 +12,33 @@ const OpsPage = () => {
   const [activeTab, setActiveTab] = useState('compliance');
 
   return (
-    <div className="flex flex-col gap-5 py-2 pb-12 min-h-screen animate-in fade-in slide-in-from-bottom-4 duration-700">
-      <OperationsCommandCenter />
-      
-      <OpsTabs activeTab={activeTab} onTabChange={setActiveTab} />
-      
-      {/* Content based on activeTab */}
-      <div className="flex flex-col gap-4 mt-2">
-        {activeTab === 'compliance' && (
-          <>
-            <ComplianceSummary />
-            <ComplianceAuditTable />
-          </>
-        )}
-
-        {activeTab === 'portal' && (
-          <>
-            <PortalHealthCards />
-          </>
-        )}
-
-        {activeTab === 'agent' && (
-          <>
-            <AgentPerformanceTable />
-          </>
-        )}
-
-        {activeTab === 'automation' && (
-          <>
-            <AutomationRules />
-          </>
-        )}
-
-        {activeTab === 'alerts' && (
-          <>
-            <OpsAlerts />
-          </>
-        )}
-        
-        {activeTab !== 'compliance' && activeTab !== 'portal' && activeTab !== 'agent' && activeTab !== 'automation' && activeTab !== 'alerts' && (
-          <div className="bg-white dark:bg-[#1a1c2e]/40 backdrop-blur-xl border border-slate-200 dark:border-slate-800 rounded-[24px] p-8 flex flex-col items-center justify-center min-h-[350px] text-slate-400 font-medium italic border-dashed">
-            {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} view and detailed metrics coming soon...
+    <main className="flex-1  min-h-screen transition-colors duration-300">
+      <div className="max-w-[1400px] mx-auto w-full">
+        <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
+          
+          {/* Header Section */}
+          <OperationsCommandCenter />
+          
+          {/* Navigation Tabs */}
+          <OpsTabs activeTab={activeTab} onTabChange={setActiveTab} />
+          
+          {/* Dynamic Content Area */}
+          <div className="page-transition">
+            {activeTab === 'compliance' && (
+              <>
+                <ComplianceSummary />
+                <ComplianceAuditTable />
+              </>
+            )}
+            
+            {activeTab === 'portal' && <PortalHealthCards />}
+            {activeTab === 'performance' && <AgentPerformanceTable />}
+            {activeTab === 'automation' && <AutomationRules />}
+            {activeTab === 'alerts' && <OpsAlerts />}
           </div>
-        )}
+        </div>
       </div>
-    </div>
+    </main>
   );
 };
 
