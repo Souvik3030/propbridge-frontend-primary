@@ -112,7 +112,11 @@ const EditListingPage = () => {
         owner: pfListing.owner || 'Select Owner',
         
         // Metadata
-        status: pfListing.status || 'draft',
+        status: pfListing.status === 'active' ? 'Live' 
+              : pfListing.status === 'inactive' ? 'Unpublish' 
+              : pfListing.status === 'draft' ? 'Save as Draft'
+              : pfListing.status === 'archived' ? 'Archived'
+              : 'Save as Draft',
         portals: pfListing.portals || { pf: true, bayut: true, dubizzle: true, website: false },
         is_exempt_area: pfListing.is_exempt_area || false,
         ownershipType: pfListing.ownership_type || '',

@@ -605,11 +605,12 @@ export const useListingSync = (initialData = null, id = null) => {
       location_id: Number(formData.pf_location_id),
       emirate_id: Number(formData.emirate_id),
       uae_emirate: uaeEmirate,
-      uaeEmirate,
       type: propertyType,
       listing_type: (formData.purpose || 'sale').toLowerCase(),
       category: formData.category?.toLowerCase(),
       property_type: propertyType,
+      
+      status: formData.status,
 
       // Flattened fields based on backend validation errors
       price: Number(formData.price),
@@ -761,6 +762,7 @@ export const useListingSync = (initialData = null, id = null) => {
       ownerName: formData.ownerName || undefined,
       plotNumber: formData.plotNumber || undefined,
       portals: formData.portals,
+      status: formData.status,
     };
 
 
